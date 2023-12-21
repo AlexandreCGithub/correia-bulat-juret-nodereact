@@ -1,0 +1,14 @@
+.nav-link {
+  color: black;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  background-color: aquamarine;
+}
+

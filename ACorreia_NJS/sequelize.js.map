@@ -1,0 +1,1 @@
+{"version":3,"file":"sequelize.js","sourceRoot":"","sources":["sequelize.ts"],"names":[],"mappings":";AAAA,eAAe;;AAEf,6DAAiD;AAEjD,IAAM,SAAS,GAAG,IAAI,gCAAS,CAAC;IAC5B,QAAQ,EAAE,qBAAqB;IAC/B,QAAQ,EAAE,qBAAqB;IAC/B,QAAQ,EAAE,MAAM;IAChB,IAAI,EAAE,WAAW;IACjB,OAAO,EAAE,UAAU,EAAE,oCAAoC;CAC5D,CAAC,CAAC;AAEH,kBAAe,SAAS,CAAC"}

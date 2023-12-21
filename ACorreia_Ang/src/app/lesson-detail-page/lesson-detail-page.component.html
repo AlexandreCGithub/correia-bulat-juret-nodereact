@@ -1,0 +1,28 @@
+<div class="container mt-4">
+  <div *ngIf="currentLearningPackage" class="card mb-4">
+    <div class="card-body">
+      <h3 class="card-title">{{ currentLearningPackage.nom_lp }}</h3>
+      <p class="card-text">{{ currentLearningPackage.description_lp }}</p>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <h6>Ceci n'est pas la page d'entraînement, c'est la page admin pour modifier/supprimer.</h6>
+  </div>
+
+  <div *ngIf="Questions && Questions.length > 0">
+    <h4>Questions:</h4>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let question of Questions">
+        <strong>{{ question.intitule_question }}</strong>
+        <p>Reponse: {{ question.reponse_question }}</p>
+        <p>Coefficient: {{ question.coef_question }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!Questions || Questions.length === 0" class="alert alert-info">
+    No questions available for this package.
+  </div>
+</div>
+

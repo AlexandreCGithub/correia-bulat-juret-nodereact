@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mb-4" *ngFor="let p of learningPackages">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title">{{ p.nom_lp }}</h3>
+          <p class="card-text">{{ p.description_lp }}</p>
+          <button class="btn btn-primary" (click)="goToDetailsPage(p)">Voir détails, modifier, supprimer/ajouter questions</button>
+          <button class="btn btn-danger ms-2" (click)="deletePackage(p)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h3>Ajouter un Learning Package</h3>
+      <h6>Pour ajouter des questions, créer le learning package puis cliquez sur ses détails</h6>
+      <h6>Les deux champs sont obligatoires pour pouvoir créer</h6>
+      <form #packageForm="ngForm" (ngSubmit)="createLearningPackage()">
+        <div class="mb-3">
+          <label for="packageName" class="form-label">Package Name</label>
+          <input type="text" class="form-control" id="packageName"
+                 [(ngModel)]="nom_nouveau_lp" name="nom_lp" required>
+        </div>
+        <div class="mb-3">
+          <label for="packageDescription" class="form-label">Description</label>
+          <textarea class="form-control" id="packageDescription"
+                    [(ngModel)]="description_nouveau_lp" name="description_lp" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success" [disabled]="!packageForm.valid">Create Package</button>
+      </form>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
