@@ -11,6 +11,8 @@ import {CreatedLearningPackage} from "../created-interfaces";
 })
 export class LessonListPageComponent implements OnInit {
   learningPackages : LearningPackage[] = [];
+
+
   nom_nouveau_lp: string ='';
   description_nouveau_lp: string = '';
   constructor(private LPservice: LessonPackageService,

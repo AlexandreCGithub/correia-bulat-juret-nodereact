@@ -3,20 +3,67 @@
     <div class="card-body">
       <h3 class="card-title">{{ currentLearningPackage.nom_lp }}</h3>
       <p class="card-text">{{ currentLearningPackage.description_lp }}</p>
+
+      <!-- Bouton pour activer le formulaire de mise à jour -->
+      <button class="btn btn-primary" (click)="showUpdateLPForm = !showUpdateLPForm">
+        Modifier nom/description
+      </button>
+      <span *ngIf="updateLPSuccess" class="ml-2 text-success"> Modifications enregistrées dans la BDD</span>
+    </div>
+
+    <!-- Formulaire de mise à jour -->
+    <!-- Ca va lancer l'update dans le back puis on rechargera la page -->
+    <div *ngIf="showUpdateLPForm" class="mt-3">
+      <form (submit)="updateLearningPackage()">
+        <div class="form-group">
+          <label for="nom">Nom:</label>
+          <input type="text" class="form-control" [(ngModel)]="currentLearningPackage.nom_lp" name="nom">
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea class="form-control" [(ngModel)]="currentLearningPackage.description_lp" name="description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success ">Sauvegarder modifications</button>
+      </form>
     </div>
   </div>
 
-  <div class="container mt-4">
+
+<div class="container mt-4">
     <h6>Ceci n'est pas la page d'entraînement, c'est la page admin pour modifier/supprimer.</h6>
   </div>
 
   <div *ngIf="Questions && Questions.length > 0">
     <h4>Questions:</h4>
     <ul class="list-group">
-      <li class="list-group-item" *ngFor="let question of Questions">
-        <strong>{{ question.intitule_question }}</strong>
-        <p>Reponse: {{ question.reponse_question }}</p>
-        <p>Coefficient: {{ question.coef_question }}</p>
+      <li class="list-group-item" *ngFor="let q of Questions">
+        <strong>{{ q.intitule_question }}</strong>
+        <p>Reponse: {{ q.reponse_question }}</p>
+        <p>Coefficient: {{ q.coef_question }}</p>
+        <button class="btn btn-danger me-2" (click)="deleteQuestion(q)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <!-- Bouton pour activer le formulaire de mise à jour -->
+        <button class="btn btn-primary" (click)="showUpdateQForm[q.id_question-1] = !showUpdateQForm[q.id_question-1]">
+          Modifier la question
+        </button>
+        <span *ngIf="updateQSuccess[q.id_question-1]" class="ml-2 text-success"> Modifications enregistrées dans la BDD</span>
+
+        <div *ngIf="showUpdateQForm[q.id_question-1]" class="mt-3">
+          <form (submit)="updateQuestion(q)">
+            <div class="form-group">
+              <label for="intituleQuestion-{{q.id_question}}">Nom:</label>
+              <input type="text" class="form-control" [(ngModel)]="q.intitule_question" name="intituleQuestion-{{q.id_question}}">
+            </div>
+            <div class="form-group">
+              <label for="reponseQuestion-{{q.id_question}}">Nom:</label>
+              <input type="text" class="form-control" [(ngModel)]="q.reponse_question" name="reponseQuestion-{{q.id_question}}">
+            </div>
+            <button type="submit" class="btn btn-success ">Sauvegarder modifications</button>
+          </form>
+        </div>
+
       </li>
     </ul>
   </div>
@@ -25,4 +72,26 @@
     No questions available for this package.
   </div>
 </div>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <h3>Ajouter une question dans le Learning Package</h3>
+    <form #packageForm="ngForm" (ngSubmit)="createQuestion()">
+      <div class="mb-3">
+        <label for="questionIntitule" class="form-label">Intitulé de la question</label>
+        <input type="text" class="form-control" id="questionIntitule"
+               [(ngModel)]="intitule_nouvelle_question" name="intitule_question" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="questionReponse" class="form-label">Réponse de la question</label>
+        <input type="text" class="form-control" id="questionReponse"
+               [(ngModel)]="reponse_nouvelle_question" name="reponse_question" required>
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!packageForm.valid">Créer Question</button>
+    </form>
+  </div>
+</div>
+
 

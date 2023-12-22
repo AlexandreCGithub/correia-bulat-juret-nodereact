@@ -112,6 +112,27 @@ app.post('/api/add-learningpackage', async (req, res) => {
     }
 });
 
+app.put('/api/update-learningpackage', async (req, res) => {
+    console.log("PUT learning package atteint dans le back");
+    try {
+        const { nom_lp, description_lp, id_lp } = req.body;
+
+        // On utilise la protection contre les injections SQL
+        const safeNomLp = sequelize.escape(nom_lp);
+        const safeDescriptionLp = sequelize.escape(description_lp);
+        const safeIdLp = sequelize.escape(id_lp);
+
+        const result = await sequelize.query(`UPDATE LearningPackage SET nom_lp = ${safeNomLp}, description_lp = ${safeDescriptionLp} WHERE id_lp = ${safeIdLp}`);
+
+        res.status(200).json({ message: 'Package MAJ avec succès' });
+    } catch (error) {
+        console.error('Erreur lors de l update du package :', error);
+        res.status(500).json({ error: 'Erreur lors de l update du package' });
+    }
+});
+
+
+
 
 
 //Routes pour questions
@@ -158,3 +179,42 @@ app.delete('/api/delete-question/:id', async(req: Request, res: Response) => {
     }
 });
 
+app.post('/api/add-question', async (req, res) => {
+    console.log("POST question atteint dans le back");
+    try {
+        const {intitule_question,reponse_question,id_lp} = req.body;
+
+        // On utilise la protection contre les injections SQL
+        const safe_id_lp = sequelize.escape(id_lp);
+        const safe_intitule_question = sequelize.escape(intitule_question);
+        const safe_reponse_question = sequelize.escape(reponse_question);
+
+        const result = await sequelize.query(`INSERT INTO Questions (intitule_question, reponse_question,coef_question,id_lp) VALUES (${safe_intitule_question}, ${safe_reponse_question},0 ,${safe_id_lp})`);
+
+        res.status(201).json({ message: 'Question ajoutée avec succès', id: result[0] });
+    } catch (error) {
+        console.error('Erreur lors de l ajout de la question :', error);
+        res.status(500).json({ error: 'Erreur lors de l ajout de la question' });
+    }
+});
+
+app.put('/api/update-question', async (req, res) => {
+    console.log("PUT question atteint dans le back");
+    try {
+        const { intitule_question,reponse_question,coef_question,id_question, id_lp } = req.body;
+
+        // On utilise la protection contre les injections SQL
+        const safe_id_lp = sequelize.escape(id_lp);
+        const safe_intitule_question = sequelize.escape(intitule_question);
+        const safe_reponse_question = sequelize.escape(reponse_question);
+        const safe_coef_question = sequelize.escape(coef_question);
+        const safe_id_question = sequelize.escape(id_question);
+
+        const result = await sequelize.query(`UPDATE Questions SET intitule_question = ${safe_intitule_question}, reponse_question = ${safe_reponse_question}, coef_question = ${safe_coef_question} WHERE id_question = ${safe_id_question}`);
+
+        res.status(200).json({ message: 'Question MAJ avec succès' });
+    } catch (error) {
+        console.error('Erreur lors de l update de la question :', error);
+        res.status(500).json({ error: 'Erreur lors de l update de la question' });
+    }
+});

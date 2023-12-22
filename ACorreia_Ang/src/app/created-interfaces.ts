@@ -20,3 +20,11 @@ export interface CreatedLearningPackage
   nom_lp: string;
   description_lp:string;
 }
+
+//CreatedQuestion représente la structure pour les questions créées mais pas encore insérées dans la bdd et qui n'ont pas encore d'id_question et de coeff
+export interface CreatedQuestion
+{
+  intitule_question: string;
+  reponse_question: string;
+  id_lp: number;
+}

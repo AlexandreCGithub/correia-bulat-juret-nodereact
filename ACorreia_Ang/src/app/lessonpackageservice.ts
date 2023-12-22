@@ -31,10 +31,16 @@ export class LessonPackageService {
   }
 
   postLP(newLearningPackage:CreatedLearningPackage){
-    console.log('test 1');
     //Pour la requête post on va utiliser CreatedLearningPackage qui est une interface sans l'id, qui n'est pas encore définie
     //CreatedLearningPackage représente la structure pour les LP créés mais pas encore insérés dans la bdd
     //L'id va être définie par la bdd
     return this.http.post('/api/add-learningpackage',newLearningPackage);
+  }
+
+  putLp(updatedLearningPackage:LearningPackage)
+  {
+    console.log('1');
+    //Pour la MAJ on on peut simplement utiliser l'interface LearningPackage
+    return this.http.put('/api/update-learningpackage',updatedLearningPackage);
   }
 }

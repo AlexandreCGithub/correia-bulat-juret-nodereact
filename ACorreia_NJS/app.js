@@ -177,9 +177,36 @@ app.post('/api/add-learningpackage', function (req, res) { return __awaiter(void
         }
     });
 }); });
+app.put('/api/update-learningpackage', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, nom_lp, description_lp, id_lp, safeNomLp, safeDescriptionLp, safeIdLp, result, error_5;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                console.log("PUT learning package atteint dans le back");
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                _a = req.body, nom_lp = _a.nom_lp, description_lp = _a.description_lp, id_lp = _a.id_lp;
+                safeNomLp = sequelize_1.default.escape(nom_lp);
+                safeDescriptionLp = sequelize_1.default.escape(description_lp);
+                safeIdLp = sequelize_1.default.escape(id_lp);
+                return [4 /*yield*/, sequelize_1.default.query("UPDATE LearningPackage SET nom_lp = ".concat(safeNomLp, ", description_lp = ").concat(safeDescriptionLp, " WHERE id_lp = ").concat(safeIdLp))];
+            case 2:
+                result = _b.sent();
+                res.status(200).json({ message: 'Package MAJ avec succès' });
+                return [3 /*break*/, 4];
+            case 3:
+                error_5 = _b.sent();
+                console.error('Erreur lors de l update du package :', error_5);
+                res.status(500).json({ error: 'Erreur lors de l update du package' });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 //Routes pour questions
 app.get('/api/questionsof-learningpackage/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var packageId, result, questions, error_5;
+    var packageId, result, questions, error_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -195,8 +222,8 @@ app.get('/api/questionsof-learningpackage/:id', function (req, res) { return __a
                 res.json(questions);
                 return [2 /*return*/];
             case 3:
-                error_5 = _a.sent();
-                console.error('Erreur lors de la récupération des questions du package :', packageId, error_5);
+                error_6 = _a.sent();
+                console.error('Erreur lors de la récupération des questions du package :', packageId, error_6);
                 res.status(500).json({ error: 'Erreur lors de la récupération des questions.' });
                 return [2 /*return*/];
             case 4: return [2 /*return*/];
@@ -204,7 +231,7 @@ app.get('/api/questionsof-learningpackage/:id', function (req, res) { return __a
     });
 }); });
 app.get('/api/question/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var questionId, result, question, error_6;
+    var questionId, result, question, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -220,8 +247,8 @@ app.get('/api/question/:id', function (req, res) { return __awaiter(void 0, void
                 res.json(question);
                 return [2 /*return*/];
             case 3:
-                error_6 = _a.sent();
-                console.error('Erreur lors de la récupération de la question :', questionId, error_6);
+                error_7 = _a.sent();
+                console.error('Erreur lors de la récupération de la question :', questionId, error_7);
                 res.status(500).json({ error: 'Erreur lors de la récupération de la question.' });
                 return [2 /*return*/];
             case 4: return [2 /*return*/];
@@ -229,7 +256,7 @@ app.get('/api/question/:id', function (req, res) { return __awaiter(void 0, void
     });
 }); });
 app.delete('/api/delete-question/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var questionId, error_7;
+    var questionId, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -243,10 +270,66 @@ app.delete('/api/delete-question/:id', function (req, res) { return __awaiter(vo
                 _a.sent();
                 return [2 /*return*/];
             case 3:
-                error_7 = _a.sent();
-                console.error('Erreur lors de la suppression de la question :', questionId, error_7);
+                error_8 = _a.sent();
+                console.error('Erreur lors de la suppression de la question :', questionId, error_8);
                 res.status(500).json({ error: 'Erreur lors de la suppression de la question.' });
                 return [2 /*return*/];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.post('/api/add-question', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, intitule_question, reponse_question, id_lp, safe_id_lp, safe_intitule_question, safe_reponse_question, result, error_9;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                console.log("POST question atteint dans le back");
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                _a = req.body, intitule_question = _a.intitule_question, reponse_question = _a.reponse_question, id_lp = _a.id_lp;
+                safe_id_lp = sequelize_1.default.escape(id_lp);
+                safe_intitule_question = sequelize_1.default.escape(intitule_question);
+                safe_reponse_question = sequelize_1.default.escape(reponse_question);
+                return [4 /*yield*/, sequelize_1.default.query("INSERT INTO Questions (intitule_question, reponse_question,coef_question,id_lp) VALUES (".concat(safe_intitule_question, ", ").concat(safe_reponse_question, ",0 ,").concat(safe_id_lp, ")"))];
+            case 2:
+                result = _b.sent();
+                res.status(201).json({ message: 'Question ajoutée avec succès', id: result[0] });
+                return [3 /*break*/, 4];
+            case 3:
+                error_9 = _b.sent();
+                console.error('Erreur lors de l ajout de la question :', error_9);
+                res.status(500).json({ error: 'Erreur lors de l ajout de la question' });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.put('/api/update-question', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, intitule_question, reponse_question, coef_question, id_question, id_lp, safe_id_lp, safe_intitule_question, safe_reponse_question, safe_coef_question, safe_id_question, result, error_10;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                console.log("PUT question atteint dans le back");
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                _a = req.body, intitule_question = _a.intitule_question, reponse_question = _a.reponse_question, coef_question = _a.coef_question, id_question = _a.id_question, id_lp = _a.id_lp;
+                safe_id_lp = sequelize_1.default.escape(id_lp);
+                safe_intitule_question = sequelize_1.default.escape(intitule_question);
+                safe_reponse_question = sequelize_1.default.escape(reponse_question);
+                safe_coef_question = sequelize_1.default.escape(coef_question);
+                safe_id_question = sequelize_1.default.escape(id_question);
+                return [4 /*yield*/, sequelize_1.default.query("UPDATE Questions SET intitule_question = ".concat(safe_intitule_question, ", reponse_question = ").concat(safe_reponse_question, ", coef_question = ").concat(safe_coef_question, " WHERE id_question = ").concat(safe_id_question))];
+            case 2:
+                result = _b.sent();
+                res.status(200).json({ message: 'Question MAJ avec succès' });
+                return [3 /*break*/, 4];
+            case 3:
+                error_10 = _b.sent();
+                console.error('Erreur lors de l update de la question :', error_10);
+                res.status(500).json({ error: 'Erreur lors de l update de la question' });
+                return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
