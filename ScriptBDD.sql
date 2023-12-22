@@ -11,14 +11,19 @@ CREATE ROLE "learningDbUser_arti" WITH
   ENCRYPTED PASSWORD 'SCRAM-SHA-256$4096:Hpq3TkwDoJ+leTxma14F8w==$5qp+H7ytRNovp8kv+k92ZVuJP8dFTL0StIpNKREuc0Y=:z4PRvcGQVJjyR/kqHtvDwOJxUve8mL6hRbJGNL0SO2M=';
   --Le mot de passe est 1234
 
+DROP TRIGGER IF EXISTS update_coef_trigger ON Questions;
+DROP FUNCTION IF EXISTS update_coef_moyen();
+
 DROP TABLE IF EXISTS Questions;
 DROP TABLE IF EXISTS LearningPackage;
+
 
 
 CREATE TABLE LearningPackage (
 	Id_LP SERIAL PRIMARY KEY,
 	Nom_LP VARCHAR(100),
-	Description_LP VARCHAR(100)
+	Description_LP VARCHAR(100),
+	Coef_Moyen NUMERIC(4,2) DEFAULT -1
 );
 
 CREATE TABLE Questions (
@@ -29,6 +34,29 @@ CREATE TABLE Questions (
     Id_LP INT,
     CONSTRAINT fk_learning_package FOREIGN KEY (Id_LP) REFERENCES LearningPackage(Id_LP) ON DELETE CASCADE
 );
+
+
+CREATE OR REPLACE FUNCTION update_coef_moyen()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE LearningPackage
+    SET Coef_Moyen = (
+        SELECT COALESCE(SUM(Coef_Question) / COUNT(*), -1)
+        FROM Questions
+        WHERE Id_LP = NEW.Id_LP
+    )
+    WHERE Id_LP = NEW.Id_LP;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER update_coef_trigger
+AFTER INSERT OR UPDATE OR DELETE ON Questions
+FOR EACH ROW
+EXECUTE FUNCTION update_coef_moyen();
+
+
 
 
 INSERT INTO LearningPackage (Nom_LP, Description_LP) VALUES

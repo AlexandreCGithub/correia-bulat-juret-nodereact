@@ -30,6 +30,6 @@ export class QuestionService {
   putQuestion(updatedQuestion:Question)
   {
     //Pour la MAJ on on peut simplement utiliser l'interface Question
-    return this.http.post('/api/update-question',updatedQuestion);
+    return this.http.put('/api/update-question',updatedQuestion);
   }
 }

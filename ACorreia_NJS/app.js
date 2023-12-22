@@ -79,7 +79,7 @@ app.listen(3000, function () {
 });
 //Routes pour learningpackages
 app.get('/api/learningpackages-all', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, learningpackages, error_1;
+    var all_lp, learningpackages, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -89,8 +89,8 @@ app.get('/api/learningpackages-all', function (req, res) { return __awaiter(void
                 _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM LearningPackage')];
             case 2:
-                result = _a.sent();
-                learningpackages = result[0];
+                all_lp = _a.sent();
+                learningpackages = all_lp[0];
                 res.json(learningpackages);
                 return [2 /*return*/];
             case 3:

@@ -100,7 +100,7 @@ export class LessonDetailPageComponent implements OnInit {
     //Et donc dans la BDD
     //On n'autorise la MAJ que si le learningPackage est chargé
     if (this.currentLearningPackage !== null) {
-      console.log('MAJ déclenchée')
+      console.log('MAJ déclenchée pour le LP')
       this.LPservice.putLp(this.currentLearningPackage as LearningPackage).subscribe();
       this.updateLPSuccess = true;
     }
@@ -109,7 +109,13 @@ export class LessonDetailPageComponent implements OnInit {
 
   updateQuestion(q:Question)
   {
-
+    console.log('update Question atteint dans le back')
+    if (q !== null) {
+      console.log('MAJ déclenchée pour la question')
+      this.Qservice.putQuestion(q).subscribe();
+      this.updateQSuccess[q.id_question-1] = true;
+    }
+    this.showUpdateQForm[q.id_question-1] = !this.showUpdateQForm
   }
 
 }

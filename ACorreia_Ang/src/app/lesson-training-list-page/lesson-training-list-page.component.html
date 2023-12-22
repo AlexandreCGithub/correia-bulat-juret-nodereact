@@ -1,0 +1,28 @@
+
+<div class="container">
+  <br>
+  <select class="form-select" [(ngModel)]="selectedQuestionCount">
+    <option value="5">5 questions</option>
+    <option value="10">10 questions</option>
+    <option value="15">15 questions</option>
+  </select>
+  <br>
+  <div class="row">
+    <div class="col-md-6 mb-4" *ngFor="let p of learningPackages">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title">{{ p.nom_lp }}</h3>
+          <p class="card-text">{{ p.description_lp }}</p>
+          <p class="card-text" [ngStyle]="{'color': getColor(p.coef_moyen)}">
+            Coefficient moyen d'apprentissage : {{ p.coef_moyen }} / 1
+          </p>
+          <button class="btn btn-primary" (click)="goToDetailsPage(p)">S'entraîner !</button>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+
+
+

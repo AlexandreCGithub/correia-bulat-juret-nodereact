@@ -48,15 +48,16 @@ app.listen(3000, function () {
     console.log('Ok, started!');
 });
 
+
 //Routes pour learningpackages
 app.get('/api/learningpackages-all', async(req: Request, res: Response) => {
     console.log("GET learning packages atteint dans le back");
     try {
-        const result = await sequelize.query('SELECT * FROM LearningPackage');
-        let learningpackages = result[0];
-
+        const all_lp = await sequelize.query('SELECT * FROM LearningPackage');
+        let learningpackages = all_lp[0];
         res.json(learningpackages);
         return;
+
     } catch (error) {
         console.error('Erreur lors de la récupération des packages :', error);
         res.status(500).json({ error: 'Erreur lors de la récupération des packages.' });

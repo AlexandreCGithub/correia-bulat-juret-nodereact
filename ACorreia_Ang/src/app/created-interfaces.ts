@@ -3,6 +3,7 @@ export interface LearningPackage
   id_lp: number;
   nom_lp: string;
   description_lp:string;
+  coef_moyen:number;
 }
 
 export interface Question
