@@ -199,6 +199,8 @@ app.post('/api/add-question', async (req, res) => {
     }
 });
 
+
+//Cette route est utilisée pour update les scores des questions, ou les infos
 app.put('/api/update-question', async (req, res) => {
     console.log("PUT question atteint dans le back");
     try {
@@ -217,5 +219,23 @@ app.put('/api/update-question', async (req, res) => {
     } catch (error) {
         console.error('Erreur lors de l update de la question :', error);
         res.status(500).json({ error: 'Erreur lors de l update de la question' });
+    }
+});
+
+
+//Route pour l'historique
+
+app.get('/api/historique-complet', async(req: Request, res: Response) => {
+    console.log("GET historique complet atteint dans le back");
+    try {
+        const reponse = await sequelize.query('SELECT * FROM Historique_Modif_Questions');
+        let histo = reponse[0];
+        res.json(histo);
+        return;
+
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l historique :', error);
+        res.status(500).json({ error: 'Erreur lors de la récupération de l historique.'});
+        return;
     }
 });

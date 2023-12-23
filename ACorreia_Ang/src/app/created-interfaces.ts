@@ -15,6 +15,15 @@ export interface Question
   id_lp: number;
 }
 
+export interface Element_Historique
+{
+  date_h:string;
+  coef_avant:number;
+  coef_apres:number;
+  id_question:number;
+}
+
+
 //CreatedLearningPackage représente la structure pour les LP créés mais pas encore insérés dans la bdd et qui n'ont pas encore d'id
 export interface CreatedLearningPackage
 {

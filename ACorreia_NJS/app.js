@@ -305,6 +305,7 @@ app.post('/api/add-question', function (req, res) { return __awaiter(void 0, voi
         }
     });
 }); });
+//Cette route est utilisée pour update les scores des questions, ou les infos
 app.put('/api/update-question', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, intitule_question, reponse_question, coef_question, id_question, id_lp, safe_id_lp, safe_intitule_question, safe_reponse_question, safe_coef_question, safe_id_question, result, error_10;
     return __generator(this, function (_b) {
@@ -330,6 +331,31 @@ app.put('/api/update-question', function (req, res) { return __awaiter(void 0, v
                 console.error('Erreur lors de l update de la question :', error_10);
                 res.status(500).json({ error: 'Erreur lors de l update de la question' });
                 return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+//Route pour l'historique
+app.get('/api/historique-complet', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var reponse, histo, error_11;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("GET historique complet atteint dans le back");
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM Historique_Modif_Questions')];
+            case 2:
+                reponse = _a.sent();
+                histo = reponse[0];
+                res.json(histo);
+                return [2 /*return*/];
+            case 3:
+                error_11 = _a.sent();
+                console.error('Erreur lors de la récupération de l historique :', error_11);
+                res.status(500).json({ error: 'Erreur lors de la récupération de l historique.' });
+                return [2 /*return*/];
             case 4: return [2 /*return*/];
         }
     });

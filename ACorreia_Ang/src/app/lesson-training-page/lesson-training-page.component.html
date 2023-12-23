@@ -37,16 +37,7 @@
   <div *ngIf="trainingEnd">
     <p>Résumé de l'entraînement: (evolution des coefs)</p>
     <br>
-  <div *ngFor="let r of resumeEntrainement">
 
-  <p>{{r}}</p>
-
-  </div>
-    <div *ngFor="let t of randomQuestions">
-
-      <p>{{t.intitule_question}}</p>
-
-    </div>
     <a class="btn btn-primary" [routerLink]="['/lesson-training-list-page']">Retour à la liste</a>
     <button class="btn btn-outline-info" (click)="recommencer()">S'entraîner encore!</button>
   </div>

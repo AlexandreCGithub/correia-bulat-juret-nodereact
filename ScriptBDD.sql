@@ -12,8 +12,13 @@ CREATE ROLE "learningDbUser_arti" WITH
   --Le mot de passe est 1234
 
 DROP TRIGGER IF EXISTS update_coef_trigger ON Questions;
-DROP FUNCTION IF EXISTS update_coef_moyen();
+DROP TRIGGER IF EXISTS update_histo_trigger ON Questions;
 
+DROP FUNCTION IF EXISTS update_coef();
+DROP FUNCTION IF EXISTS update_question_history();
+
+
+DROP TABLE IF EXISTS Historique_Modif_Questions;
 DROP TABLE IF EXISTS Questions;
 DROP TABLE IF EXISTS LearningPackage;
 
@@ -23,20 +28,30 @@ CREATE TABLE LearningPackage (
 	Id_LP SERIAL PRIMARY KEY,
 	Nom_LP VARCHAR(100),
 	Description_LP VARCHAR(100),
-	Coef_Moyen NUMERIC(4,2) DEFAULT -1
+	Coef_Moyen INT DEFAULT 0 --Coeff moyen, entre 0 et 100, est arrondi si besoin et recalculé par trigger à chaque update
 );
 
 CREATE TABLE Questions (
     Id_Question SERIAL PRIMARY KEY,
     Intitule_Question VARCHAR(100),
 	Reponse_Question VARCHAR(100),
-    Coef_Question NUMERIC(4,2),
+    Coef_Question INT, --Coeff moyen, entre 0 et 100
     Id_LP INT,
     CONSTRAINT fk_learning_package FOREIGN KEY (Id_LP) REFERENCES LearningPackage(Id_LP) ON DELETE CASCADE
 );
 
 
-CREATE OR REPLACE FUNCTION update_coef_moyen()
+CREATE TABLE Historique_Modif_Questions(
+	Id_H SERIAL PRIMARY KEY,
+	Date_H TIMESTAMP,
+	Coef_avant INT,
+	Coef_apres INT,
+	Nom_LP VARCHAR(100),
+	Intitule_Question VARCHAR(100)
+);
+
+
+CREATE OR REPLACE FUNCTION update_coef()
 RETURNS TRIGGER AS $$
 BEGIN
     UPDATE LearningPackage
@@ -46,16 +61,33 @@ BEGIN
         WHERE Id_LP = NEW.Id_LP
     )
     WHERE Id_LP = NEW.Id_LP;
-
+	
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION update_question_history()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO Historique_Modif_Questions (Date_H, Coef_avant, Coef_apres, Nom_LP, Intitule_Question)
+    VALUES (CURRENT_TIMESTAMP, OLD.Coef_Question, NEW.Coef_Question, (SELECT Nom_LP FROM LearningPackage WHERE Id_LP = NEW.Id_LP), NEW.Intitule_Question);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
 CREATE OR REPLACE TRIGGER update_coef_trigger
 AFTER INSERT OR UPDATE OR DELETE ON Questions
 FOR EACH ROW
-EXECUTE FUNCTION update_coef_moyen();
+EXECUTE FUNCTION update_coef();
 
+CREATE OR REPLACE TRIGGER update_histo_trigger
+AFTER UPDATE ON Questions
+FOR EACH ROW
+EXECUTE FUNCTION update_question_history();
 
 
 

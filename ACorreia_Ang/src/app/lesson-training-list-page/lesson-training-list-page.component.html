@@ -14,7 +14,7 @@
           <h3 class="card-title">{{ p.nom_lp }}</h3>
           <p class="card-text">{{ p.description_lp }}</p>
           <p class="card-text" [ngStyle]="{'color': getColor(p.coef_moyen)}">
-            Coefficient moyen d'apprentissage : {{ p.coef_moyen }} / 1
+            Coefficient moyen d'apprentissage : {{ p.coef_moyen }} %
           </p>
           <a class="btn btn-primary" [routerLink]="['/lesson-training-page', p.id_lp, selectedQuestionCount]">S'entraîner</a>
         </div>

@@ -15,7 +15,6 @@ export class LessonTrainingPageComponent {
   currentQuestionIndex: number = 0;
   showAnswer: boolean = false;
   trainingEnd: boolean = false;
-  resumeEntrainement: string [] = [];
 
   currentLearningPackage: LearningPackage | null = null;
   id_package: number = -1;
@@ -65,6 +64,7 @@ export class LessonTrainingPageComponent {
   }
 
   nextQuestion() {
+    this.Qservice.putQuestion(this.randomQuestions[this.currentQuestionIndex]).subscribe(); //La question va être update, la seule modif étant le coef
     this.showAnswer = false;
     if (this.currentQuestionIndex < this.randomQuestions.length - 1) {
       this.currentQuestionIndex++;
@@ -78,9 +78,7 @@ export class LessonTrainingPageComponent {
   reponse_su()
   {
     //On progresse de 20%
-    this.resumeEntrainement[this.currentQuestionIndex] = " + 0.2";
-
-    this.randomQuestions[this.currentQuestionIndex].coef_question += 0.2;
+    this.randomQuestions[this.currentQuestionIndex].coef_question += 20;
     this.nextQuestion();
   }
 
@@ -88,23 +86,15 @@ export class LessonTrainingPageComponent {
   {
     //On progresse uniquement si l'apprentissage n'était qu'à moins de 50%
     //Si on était à plus de 80%, on va même régresser
-    if(this.randomQuestions[this.currentQuestionIndex].coef_question<0.5)
+    if(this.randomQuestions[this.currentQuestionIndex].coef_question<50)
     {
-      this.resumeEntrainement[this.currentQuestionIndex] = " + 0.1";
-      this.randomQuestions[this.currentQuestionIndex].coef_question += 0.1;
+      this.randomQuestions[this.currentQuestionIndex].coef_question += 10;
     }
-    else
-    {
-      if(this.randomQuestions[this.currentQuestionIndex].coef_question>0.8)
+      if(this.randomQuestions[this.currentQuestionIndex].coef_question>80)
       {
-        this.resumeEntrainement[this.currentQuestionIndex] = " - 0.2";
-        this.randomQuestions[this.currentQuestionIndex].coef_question -=0.2;
+        this.randomQuestions[this.currentQuestionIndex].coef_question -=20;
       }
-      else
-      {
-        this.resumeEntrainement[this.currentQuestionIndex] = " pas de changement";
-      }
-    }
+
 
 
     this.nextQuestion();
@@ -114,7 +104,6 @@ export class LessonTrainingPageComponent {
   {
     //On retombe à 0
     this.randomQuestions[this.currentQuestionIndex].coef_question = 0;
-    this.resumeEntrainement[this.currentQuestionIndex] = " retour à 0";
     this.nextQuestion();
   }
 

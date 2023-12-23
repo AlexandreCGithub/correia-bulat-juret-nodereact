@@ -34,13 +34,14 @@ export class LessonTrainingListPageComponent {
 
 
   //On détermine une couleur en fct du coef_moyen
-  getColor(coef_moyen: number): string {
-    const normalizedCoef = Math.min(1, Math.max(0, coef_moyen));
+  getColor(coef_moyen:number) {
+    const normalizedCoef = Math.min(100, Math.max(0, coef_moyen)) / 100;
     const red = Math.round(255 * (1 - normalizedCoef));
     const green = Math.round(255 * normalizedCoef);
     const blue = Math.round(255 * (1 - Math.abs(normalizedCoef - 0.5) * 2));
     return `rgb(${red}, ${green}, ${blue})`;
   }
+
 
 
 }
