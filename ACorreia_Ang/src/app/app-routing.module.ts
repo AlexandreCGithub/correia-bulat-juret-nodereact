@@ -4,12 +4,14 @@ import {LessonListPageComponent} from "./lesson-list-page/lesson-list-page.compo
 import {LessonDetailPageComponent} from "./lesson-detail-page/lesson-detail-page.component";
 import {LessonTrainingListPageComponent} from "./lesson-training-list-page/lesson-training-list-page.component";
 import {HomePageComponent} from "./home-page/home-page.component";
+import {LessonTrainingPageComponent} from "./lesson-training-page/lesson-training-page.component";
 
 
 const routes: Routes = [
   { path:'lesson-management-list-page',component: LessonListPageComponent },
   { path:'lesson-training-list-page',component: LessonTrainingListPageComponent },
   { path:'lesson-detail/:id',component: LessonDetailPageComponent },
+  { path:'lesson-training-page/:id/:q',component: LessonTrainingPageComponent },
   { path:'',component: HomePageComponent },
 ];
 

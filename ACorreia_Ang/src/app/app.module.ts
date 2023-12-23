@@ -12,6 +12,7 @@ import { LessonDetailPageComponent } from './lesson-detail-page/lesson-detail-pa
 import {HttpClientModule} from "@angular/common/http";
 import { HomePageComponent } from './home-page/home-page.component';
 import { LessonTrainingListPageComponent } from './lesson-training-list-page/lesson-training-list-page.component';
+import { LessonTrainingPageComponent } from './lesson-training-page/lesson-training-page.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { LessonTrainingListPageComponent } from './lesson-training-list-page/les
     LessonDetailPageComponent,
     HomePageComponent,
     LessonTrainingListPageComponent,
+    LessonTrainingPageComponent,
   ],
   imports: [
     BrowserModule,

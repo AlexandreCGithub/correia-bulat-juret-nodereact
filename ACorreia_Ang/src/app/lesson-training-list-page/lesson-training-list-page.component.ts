@@ -28,11 +28,6 @@ export class LessonTrainingListPageComponent {
     );
   }
 
-  goToDetailsPage(p: any)
-  {
-
-  }
-
   sortLearningPackages() {
     this.learningPackages.sort((a, b) => b.coef_moyen - a.coef_moyen);
   }

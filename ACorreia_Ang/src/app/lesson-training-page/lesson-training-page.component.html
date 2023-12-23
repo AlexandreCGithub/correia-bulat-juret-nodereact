@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <div *ngIf="currentLearningPackage" class="card mb-4">
+    <div class="card-body">
+      <h3 class="card-title">{{ currentLearningPackage.nom_lp }}</h3>
+      <p class="card-text">{{ currentLearningPackage.description_lp }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="randomQuestions && randomQuestions.length > 0 && !trainingEnd">
+    <p>{{number_questions}} questions au hasard</p>
+    <h4>Question {{ currentQuestionIndex + 1 }} sur {{ randomQuestions.length }} :</h4>
+    <br>
+    <!-- <p>Coefficient actuel: {{ randomQuestions[currentQuestionIndex].coef_question }}</p> -->
+    <div>
+      <strong>{{ randomQuestions[currentQuestionIndex].intitule_question }}</strong>
+      <br>
+      <!-- Affichage conditionnel de la réponse en fonction de showAnswer -->
+      <p *ngIf="showAnswer">Réponse: {{ randomQuestions[currentQuestionIndex].reponse_question }}</p>
+
+    </div>
+    <br>
+    <div>
+      <!-- Bouton pour révéler la réponse -->
+      <button class="btn btn-secondary" (click)="showAnswer = !showAnswer">
+        {{ showAnswer ? 'Cacher la réponse' : 'Révéler la réponse' }}
+      </button>
+    </div>
+    <br>
+    <div>
+      <button class="btn btn-success" (click)="reponse_su()">Je savais</button>
+      <button class="btn btn-warning" (click)="reponse_moyen()">Je n'étais pas loin/à moitié</button>
+      <button class="btn btn-danger" (click)="reponse_non_su()">Je ne savais pas</button>
+    </div>
+  </div>
+
+
+  <div *ngIf="trainingEnd">
+    <p>Résumé de l'entraînement: (evolution des coefs)</p>
+    <br>
+  <div *ngFor="let r of resumeEntrainement">
+
+  <p>{{r}}</p>
+
+  </div>
+    <div *ngFor="let t of randomQuestions">
+
+      <p>{{t.intitule_question}}</p>
+
+    </div>
+    <a class="btn btn-primary" [routerLink]="['/lesson-training-list-page']">Retour à la liste</a>
+    <button class="btn btn-outline-info" (click)="recommencer()">S'entraîner encore!</button>
+  </div>
+
+</div>
