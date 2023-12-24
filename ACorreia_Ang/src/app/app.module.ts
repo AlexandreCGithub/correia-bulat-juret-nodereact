@@ -13,7 +13,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { HomePageComponent } from './home-page/home-page.component';
 import { LessonTrainingListPageComponent } from './lesson-training-list-page/lesson-training-list-page.component';
 import { LessonTrainingPageComponent } from './lesson-training-page/lesson-training-page.component';
-import { LessonStatPageComponent } from './lesson-stat-page/lesson-stat-page.component';
+import {LessonStatPageComponent} from "./lesson-stat-page/lesson-stat-page.component";
 
 @NgModule({
   declarations: [

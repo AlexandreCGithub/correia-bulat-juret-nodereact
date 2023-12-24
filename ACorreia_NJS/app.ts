@@ -225,10 +225,11 @@ app.put('/api/update-question', async (req, res) => {
 
 //Route pour l'historique
 
-app.get('/api/historique-complet', async(req: Request, res: Response) => {
-    console.log("GET historique complet atteint dans le back");
+app.get('/api/historique-package/:id', async(req: Request, res: Response) => {
+    const packageId = req.params.id;
+    console.log("GET historique atteint dans le back du package",packageId);
     try {
-        const reponse = await sequelize.query('SELECT * FROM Historique_Modif_Questions');
+        const reponse = await sequelize.query('SELECT * FROM Historique_Modif_Questions WHERE Id_LP=' +packageId);
         let histo = reponse[0];
         res.json(histo);
         return;

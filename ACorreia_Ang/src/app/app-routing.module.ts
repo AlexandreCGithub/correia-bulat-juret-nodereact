@@ -12,7 +12,7 @@ const routes: Routes = [
   { path:'lesson-training-list-page',component: LessonTrainingListPageComponent },
   { path:'lesson-detail/:id',component: LessonDetailPageComponent },
   { path:'lesson-training-page/:id/:q',component: LessonTrainingPageComponent },
-  { path:'lesson-stat-page',component: LessonStatPageComponent },
+  { path:'lesson-stat-page/:id',component: LessonStatPageComponent },
   { path:'',component: HomePageComponent },
 ];
 

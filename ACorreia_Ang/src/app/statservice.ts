@@ -9,8 +9,8 @@ import {Element_Historique} from "./created-interfaces";
 })
 export class StatService {
   constructor(private http: HttpClient) {}
-  getAllHistorique(): Observable<Element_Historique[]> {
-    return this.http.get<Element_Historique[]>(`/api/historique-complet`)
+  getHistorique(id_lp:number): Observable<Element_Historique[]> {
+    return this.http.get<Element_Historique[]>(`/api/historique-package/${id_lp}`)
       .pipe(
         map(response => response)
       );

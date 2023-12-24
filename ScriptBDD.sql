@@ -47,7 +47,11 @@ CREATE TABLE Historique_Modif_Questions(
 	Coef_avant INT,
 	Coef_apres INT,
 	Nom_LP VARCHAR(100),
-	Intitule_Question VARCHAR(100)
+	Id_LP INT,
+	Intitule_Question VARCHAR(100),
+	Id_Question INT,
+	CONSTRAINT fk_hist1 FOREIGN KEY (Id_LP) REFERENCES LearningPackage(Id_LP) ON DELETE CASCADE,
+    CONSTRAINT fk_hist2 FOREIGN KEY (Id_Question) REFERENCES Questions(Id_Question) ON DELETE CASCADE
 );
 
 
@@ -69,8 +73,8 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION update_question_history()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO Historique_Modif_Questions (Date_H, Coef_avant, Coef_apres, Nom_LP, Intitule_Question)
-    VALUES (CURRENT_TIMESTAMP, OLD.Coef_Question, NEW.Coef_Question, (SELECT Nom_LP FROM LearningPackage WHERE Id_LP = NEW.Id_LP), NEW.Intitule_Question);
+    INSERT INTO Historique_Modif_Questions (Date_H, Coef_avant, Coef_apres, Nom_LP, Intitule_Question,Id_LP, Id_Question)
+    VALUES (CURRENT_TIMESTAMP, OLD.Coef_Question, NEW.Coef_Question, (SELECT Nom_LP FROM LearningPackage WHERE Id_LP = NEW.Id_LP), NEW.Intitule_Question,NEW.Id_LP,NEW.Id_Question);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

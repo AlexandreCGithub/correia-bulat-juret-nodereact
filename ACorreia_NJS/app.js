@@ -336,16 +336,17 @@ app.put('/api/update-question', function (req, res) { return __awaiter(void 0, v
     });
 }); });
 //Route pour l'historique
-app.get('/api/historique-complet', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var reponse, histo, error_11;
+app.get('/api/historique-package/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var packageId, reponse, histo, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("GET historique complet atteint dans le back");
+                packageId = req.params.id;
+                console.log("GET historique atteint dans le back du package", packageId);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM Historique_Modif_Questions')];
+                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM Historique_Modif_Questions WHERE Id_LP=' + packageId)];
             case 2:
                 reponse = _a.sent();
                 histo = reponse[0];

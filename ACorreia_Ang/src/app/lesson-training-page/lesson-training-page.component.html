@@ -5,9 +5,13 @@
       <p class="card-text">{{ currentLearningPackage.description_lp }}</p>
     </div>
   </div>
+  <div *ngIf="BoolAlerte" class="alert alert-primary" role="alert">
+    Le nombre de questions demandées était supérieur au nombre disponible  donc a été réduit au max : {{randomQuestions.length}}
+  </div>
 
   <div *ngIf="randomQuestions && randomQuestions.length > 0 && !trainingEnd">
     <p>{{number_questions}} questions au hasard</p>
+    <p>Moins vous connaissez une question, plus elle a de chances d'apparaître</p>
     <h4>Question {{ currentQuestionIndex + 1 }} sur {{ randomQuestions.length }} :</h4>
     <br>
     <!-- <p>Coefficient actuel: {{ randomQuestions[currentQuestionIndex].coef_question }}</p> -->
@@ -35,7 +39,7 @@
 
 
   <div *ngIf="trainingEnd">
-    <p>Résumé de l'entraînement: (evolution des coefs)</p>
+    <p>Terminé</p>
     <br>
 
     <a class="btn btn-primary" [routerLink]="['/lesson-training-list-page']">Retour à la liste</a>

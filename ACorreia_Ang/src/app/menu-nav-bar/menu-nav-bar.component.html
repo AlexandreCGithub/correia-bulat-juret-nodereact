@@ -2,20 +2,16 @@
   <a class="navbar-brand" href="#">Arti</a>
   <ul class="navbar-nav mr-auto">
     <li ngbDropdown class="nav-item">
-      <a ngbDropdownToggle id="navbarMenu2" class="nav-link dropdown-toggle" role="button">
-        Menu
-      </a>
+      <a ngbDropdownToggle id="navbarMenu2" class="nav-link dropdown-toggle" role="button">Historique/Stats</a>
       <div ngbDropdownMenu aria-labelledby="navbarMenu2" class="dropdown-menu">
-        <a class="dropdown-item" routerLink="/lesson-edit-form">Lesson Edit Form...</a>
+        <a *ngFor="let item of learningPackages " class="dropdown-item" href="#"[routerLink]="['/lesson-stat-page', item.id_lp]">{{ item.nom_lp }}</a>
       </div>
     </li>
   </ul>
-
-  <!-- RouterLink Buttons -->
+    <!-- RouterLink Buttons -->
   <div class="navbar-nav">
     <a class="nav-link" routerLink="/lesson-management-list-page">Gestion des Learning Package</a>
     <a class="nav-link" routerLink="/lesson-training-list-page">S'entraîner</a>
-    <a class="nav-link" routerLink="/lesson-stat-page">Historique et stats</a>
   </div>
-</nav>
 
+</nav>

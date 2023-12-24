@@ -15,6 +15,7 @@ export class LessonTrainingPageComponent {
   currentQuestionIndex: number = 0;
   showAnswer: boolean = false;
   trainingEnd: boolean = false;
+  BoolAlerte: boolean = false;
 
   currentLearningPackage: LearningPackage | null = null;
   id_package: number = -1;
@@ -33,7 +34,17 @@ export class LessonTrainingPageComponent {
           (data) => {
             this.Questions = data;
             console.log(data);
+
+            //Pas assez de questions pour le nombre sélectionné
+            if(data.length<this.number_questions)
+            {
+              this.number_questions=data.length;
+              this.BoolAlerte = true;
+            }
+
+
             this.selectRandomQuestions();
+
           },
           (error) => {
             console.error('Une erreur s\'est produite lors de la récupération des questions :', error);
@@ -57,11 +68,47 @@ export class LessonTrainingPageComponent {
     );
   }
 
-  selectRandomQuestions() {
-    const shuffledQuestions = this.Questions.sort(() => Math.random() - 0.5);
-    console.log(this.Questions);
-    this.randomQuestions = shuffledQuestions.slice(0, this.number_questions);
+  //Les Questions sont sélectionnées en fonction de leur coef actuel
+  selectRandomQuestions(): void {
+    // On copie et trie les Questions en fonction de leur coef_question
+    const sortedQuestions = this.Questions.slice().sort((a, b) => a.coef_question - b.coef_question);
+    const weightedQuestions = [];
+    let totalWeight = 0;
+
+    // Calcul des poids et création du tableau pondéré
+    for (const question of sortedQuestions) {
+      const weight = 100 - question.coef_question;
+      totalWeight += weight;
+      weightedQuestions.push({ question, weight });
+    }
+
+    // Sélection aléatoire en fonction des poids
+    const selected = [];
+    while (selected.length < this.number_questions && totalWeight > 0) {
+      let randomWeight = Math.floor(Math.random() * totalWeight);
+
+      // Trouver la question correspondant au poids aléatoire
+      let selectedIndex = -1;
+      for (let i = 0; i < weightedQuestions.length; i++) {
+        if (randomWeight < weightedQuestions[i].weight) {
+          selectedIndex = i;
+          break;
+        }
+        randomWeight -= weightedQuestions[i].weight;
+      }
+
+      // Ajouter la question sélectionnée et ajuster le poids total
+      if (selectedIndex !== -1) {
+        selected.push(weightedQuestions[selectedIndex].question);
+        totalWeight -= weightedQuestions[selectedIndex].weight;
+        weightedQuestions.splice(selectedIndex, 1);
+      }
+    }
+
+    this.randomQuestions = selected;
   }
+
+
 
   nextQuestion() {
     this.Qservice.putQuestion(this.randomQuestions[this.currentQuestionIndex]).subscribe(); //La question va être update, la seule modif étant le coef

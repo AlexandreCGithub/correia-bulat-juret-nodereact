@@ -1,30 +1,36 @@
-<div class="row">
-  <div class="col-lg-6">
-    <div class="histo-column">
-      <ng-container *ngFor="let element of histo">
-        <ng-container *ngIf="element.nom_lp === selectedLearningPackageName || selectedLearningPackageName === 'tous'">
-          <div class="element-group">
-            <p>Learning Package: {{ element.nom_lp}}</p>
-            <p [style.color]="getColor(element.coef_avant, element.coef_apres)">{{getString(element.coef_avant, element.coef_apres)}} sur la question :</p>
-            <p>{{ element.intitule_question}}</p>
-            <p [style.color]="getColor(element.coef_avant, element.coef_apres)">
-              Coef passe de:
-              {{ element.coef_avant }} % --> {{ element.coef_apres }} %
-            </p>
-            <p>A la date {{ formatDateTime(element.date_h) }}</p>
-            <hr>
-          </div>
-        </ng-container>
-      </ng-container>
+<div *ngIf="histo&&currentLearningPackage">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Historique de {{histo[0].nom_lp}}</h3>
+        <div class="element-group" *ngFor="let element of histo">
+          <p [style.color]="getColor(element.coef_apres-element.coef_avant)">
+            {{ getString(element.coef_avant, element.coef_apres) }} sur la question :
+          </p>
+          <p>{{ element.intitule_question }}</p>
+          <p [style.color]="getColor(element.coef_apres-element.coef_avant)">
+            Coef passe de: {{ element.coef_avant }} % --> {{ element.coef_apres }} %
+          </p>
+          <p>A la date {{ formatDateTime(element.date_h) }}</p>
+          <hr>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3>Au total sur le package:</h3>
+        <p>Evolution moyenne: {{calculerMoyenneEvolutions()}} %</p>
+        <p>Vous avez étudié des questions {{histo.length}} fois</p>
+        <p>Ce package compte {{nombreQuestionsUniques()}} questions</p>
+        <hr>
+        <div class="element-group" *ngFor="let element of histo">
+          <p>La question {{element.intitule_question}} a été étudiée {{nombreQuestion(element)}} fois.</p>
+          <p [style.color]="getColor(coefMoyenQuestion(element))">
+            Evolution moyenne de son coef : {{coefMoyenQuestion(element)}} %
+          </p>
+          <hr>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col-lg-6">
-    <!-- Colonne vide pour créer l'espace sur la droite -->
-  </div>
 </div>
-
-
-
-
 
 
