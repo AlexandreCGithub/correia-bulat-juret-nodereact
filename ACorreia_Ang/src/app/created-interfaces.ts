@@ -20,7 +20,8 @@ export interface Element_Historique
   date_h:string;
   coef_avant:number;
   coef_apres:number;
-  id_question:number;
+  intitule_question:string;
+  nom_lp:string;
 }
 
 

@@ -43,7 +43,7 @@ CREATE TABLE Questions (
 
 CREATE TABLE Historique_Modif_Questions(
 	Id_H SERIAL PRIMARY KEY,
-	Date_H TIMESTAMP,
+	Date_H TIMESTAMP(0),
 	Coef_avant INT,
 	Coef_apres INT,
 	Nom_LP VARCHAR(100),

@@ -1,1 +1,30 @@
-<p>lesson-stat-page works!</p>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="histo-column">
+      <ng-container *ngFor="let element of histo">
+        <ng-container *ngIf="element.nom_lp === selectedLearningPackageName || selectedLearningPackageName === 'tous'">
+          <div class="element-group">
+            <p>Learning Package: {{ element.nom_lp}}</p>
+            <p [style.color]="getColor(element.coef_avant, element.coef_apres)">{{getString(element.coef_avant, element.coef_apres)}} sur la question :</p>
+            <p>{{ element.intitule_question}}</p>
+            <p [style.color]="getColor(element.coef_avant, element.coef_apres)">
+              Coef passe de:
+              {{ element.coef_avant }} % --> {{ element.coef_apres }} %
+            </p>
+            <p>A la date {{ formatDateTime(element.date_h) }}</p>
+            <hr>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <!-- Colonne vide pour créer l'espace sur la droite -->
+  </div>
+</div>
+
+
+
+
+
+
