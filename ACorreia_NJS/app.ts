@@ -1,8 +1,8 @@
 import * as express from 'express';
 import {Request, Response} from 'express';
 import sequelize from './sequelize';
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 sequelize.authenticate()
     .then(() => {
@@ -56,12 +56,10 @@ app.get('/api/learningpackages-all', async(req: Request, res: Response) => {
         const all_lp = await sequelize.query('SELECT * FROM LearningPackage');
         let learningpackages = all_lp[0];
         res.json(learningpackages);
-        return;
 
     } catch (error) {
         console.error('Erreur lors de la récupération des packages :', error);
         res.status(500).json({ error: 'Erreur lors de la récupération des packages.' });
-        return;
     }
 });
 
@@ -69,43 +67,38 @@ app.get('/api/learningpackage/:id', async(req: Request, res: Response) => {
     console.log("GET learning packages par id atteint dans le back");
     const packageId = req.params.id;
     try {
-        const result = await sequelize.query('SELECT * FROM LearningPackage where Id_LP='+packageId);
-        let learningpackage = result[0];
-
-        res.json(learningpackage);
-        return;
+        const getQuery ='SELECT * FROM LearningPackage where Id_LP = ?';
+        const result = await sequelize.query(getQuery,{replacements: [packageId]})
+        res.json(result[0]);
     } catch (error) {
         console.error('Erreur lors de la récupération du package :', error);
         res.status(500).json({ error: 'Erreur lors de la récupération du package.' });
-        return;
     }
 });
 
 app.delete('/api/delete-learningpackage/:id', async(req: Request, res: Response) => {
     const packageId = req.params.id;
     //On a activé le ON DELETE CASCADE donc on peut supprimer une table, cela supprimera les questions associées
+    //Gestion sécurisée du paramètre pour éviter injections
     console.log("DELETE learning package par id atteint dans le back ",packageId);
     try {
-        await sequelize.query('DELETE FROM LearningPackage WHERE Id_LP='+packageId);
-        return;
+        const deleteQuery = `DELETE FROM LearningPackage WHERE Id_LP = ?`;
+        const result = await sequelize.query(deleteQuery, {replacements: [packageId]});
+        res.status(200).json({ message: 'Package delete avec succès' });
     } catch (error) {
         console.error('Erreur lors de la suppression du package :',packageId, error);
         res.status(500).json({ error: 'Erreur lors de la suppression du package.' });
-        return;
     }
 });
 
 app.post('/api/add-learningpackage', async (req, res) => {
     console.log("POST learning package atteint dans le back");
     try {
-        const { nom_lp, description_lp } = req.body;
-
         // On utilise la protection contre les injections SQL
-        const safeNomLp = sequelize.escape(nom_lp);
-        const safeDescriptionLp = sequelize.escape(description_lp);
-
-        const result = await sequelize.query(`INSERT INTO LearningPackage (nom_lp, description_lp) VALUES (${safeNomLp}, ${safeDescriptionLp})`);
-
+        const { nom_lp, description_lp } = req.body;
+        const query = 'INSERT INTO LearningPackage (nom_lp, description_lp) VALUES (?, ?)';
+        const result = await sequelize.query(query, { replacements: [nom_lp, description_lp] });
+        console.log('Nouveau Learning Package créé :', result[0]);
         res.status(201).json({ message: 'Package ajouté avec succès', id: result[0] });
     } catch (error) {
         console.error('Erreur lors de l ajout du package :', error);
@@ -116,15 +109,10 @@ app.post('/api/add-learningpackage', async (req, res) => {
 app.put('/api/update-learningpackage', async (req, res) => {
     console.log("PUT learning package atteint dans le back");
     try {
-        const { nom_lp, description_lp, id_lp } = req.body;
-
         // On utilise la protection contre les injections SQL
-        const safeNomLp = sequelize.escape(nom_lp);
-        const safeDescriptionLp = sequelize.escape(description_lp);
-        const safeIdLp = sequelize.escape(id_lp);
-
-        const result = await sequelize.query(`UPDATE LearningPackage SET nom_lp = ${safeNomLp}, description_lp = ${safeDescriptionLp} WHERE id_lp = ${safeIdLp}`);
-
+        const { nom_lp, description_lp, id_lp } = req.body;
+        const query = 'UPDATE LearningPackage SET nom_lp = ?, description_lp = ? WHERE id_lp = ?';
+        const result = await sequelize.query(query, { replacements: [nom_lp, description_lp, id_lp] });
         res.status(200).json({ message: 'Package MAJ avec succès' });
     } catch (error) {
         console.error('Erreur lors de l update du package :', error);
@@ -133,18 +121,14 @@ app.put('/api/update-learningpackage', async (req, res) => {
 });
 
 
-
-
-
 //Routes pour questions
 app.get('/api/questionsof-learningpackage/:id', async(req: Request, res: Response) => {
     const packageId = req.params.id;
     console.log("GET questions of a learning package atteint dans le back ", packageId);
     try {
-        const result = await sequelize.query('SELECT * FROM Questions where Id_LP='+packageId);
-        let questions = result[0];
-        res.json(questions);
-        return;
+        const getQuery ='SELECT * FROM Questions where Id_LP = ?';
+        const result = await sequelize.query(getQuery,{replacements: [packageId]})
+        res.json(result[0]);
     } catch (error) {
         console.error('Erreur lors de la récupération des questions du package :',packageId, error);
         res.status(500).json({ error: 'Erreur lors de la récupération des questions.' });
@@ -156,14 +140,13 @@ app.get('/api/question/:id', async(req: Request, res: Response) => {
     const questionId = req.params.id;
     console.log("GET question unique par son id atteint dans le back ", questionId);
     try {
-        const result = await sequelize.query('SELECT * FROM Questions where Id_Question='+questionId);
-        let question = result[0];
-        res.json(question);
-        return;
+        const getQuery ='SELECT * FROM Questions where Id_Question = ?';
+        const result = await sequelize.query(getQuery,{replacements: [questionId]})
+        res.json(result[0]);
+
     } catch (error) {
         console.error('Erreur lors de la récupération de la question :',questionId, error);
         res.status(500).json({ error: 'Erreur lors de la récupération de la question.' });
-        return;
     }
 });
 
@@ -171,12 +154,13 @@ app.delete('/api/delete-question/:id', async(req: Request, res: Response) => {
     const questionId = req.params.id;
     console.log("DELETE question par id atteint dans le back ",questionId);
     try {
-        await sequelize.query('DELETE FROM Questions WHERE Id_Question='+questionId);
-        return;
+        const deleteQuery ='DELETE FROM Questions WHERE Id_Question = ?';
+        const result = await sequelize.query(deleteQuery,{replacements: [questionId]})
+        res.status(200).json({ message: 'Question delete avec succès' });
+
     } catch (error) {
         console.error('Erreur lors de la suppression de la question :',questionId, error);
         res.status(500).json({ error: 'Erreur lors de la suppression de la question.' });
-        return;
     }
 });
 
@@ -185,13 +169,9 @@ app.post('/api/add-question', async (req, res) => {
     try {
         const {intitule_question,reponse_question,id_lp} = req.body;
 
-        // On utilise la protection contre les injections SQL
-        const safe_id_lp = sequelize.escape(id_lp);
-        const safe_intitule_question = sequelize.escape(intitule_question);
-        const safe_reponse_question = sequelize.escape(reponse_question);
-
-        const result = await sequelize.query(`INSERT INTO Questions (intitule_question, reponse_question,coef_question,id_lp) VALUES (${safe_intitule_question}, ${safe_reponse_question},0 ,${safe_id_lp})`);
-
+        const postQuery = 'INSERT INTO Questions (intitule_question, reponse_question,coef_question,id_lp) VALUES (?,?,?,?)';
+        const result = await sequelize.query(postQuery, { replacements: [intitule_question,reponse_question,0,id_lp] });
+        console.log('Nouveau Learning Package créé :', result);
         res.status(201).json({ message: 'Question ajoutée avec succès', id: result[0] });
     } catch (error) {
         console.error('Erreur lors de l ajout de la question :', error);
@@ -205,16 +185,8 @@ app.put('/api/update-question', async (req, res) => {
     console.log("PUT question atteint dans le back");
     try {
         const { intitule_question,reponse_question,coef_question,id_question, id_lp } = req.body;
-
-        // On utilise la protection contre les injections SQL
-        const safe_id_lp = sequelize.escape(id_lp);
-        const safe_intitule_question = sequelize.escape(intitule_question);
-        const safe_reponse_question = sequelize.escape(reponse_question);
-        const safe_coef_question = sequelize.escape(coef_question);
-        const safe_id_question = sequelize.escape(id_question);
-
-        const result = await sequelize.query(`UPDATE Questions SET intitule_question = ${safe_intitule_question}, reponse_question = ${safe_reponse_question}, coef_question = ${safe_coef_question} WHERE id_question = ${safe_id_question}`);
-
+        const putQuery ='UPDATE Questions SET intitule_question = ?, reponse_question = ?, coef_question = ? WHERE id_question = ?'
+        const result = await sequelize.query(putQuery, { replacements: [intitule_question,reponse_question,coef_question,id_question] });
         res.status(200).json({ message: 'Question MAJ avec succès' });
     } catch (error) {
         console.error('Erreur lors de l update de la question :', error);
@@ -229,10 +201,9 @@ app.get('/api/historique-package/:id', async(req: Request, res: Response) => {
     const packageId = req.params.id;
     console.log("GET historique atteint dans le back du package",packageId);
     try {
-        const reponse = await sequelize.query('SELECT * FROM Historique_Modif_Questions WHERE Id_LP=' +packageId);
-        let histo = reponse[0];
-        res.json(histo);
-        return;
+        const getQuery = 'SELECT * FROM Historique_Modif_Questions WHERE Id_LP = ?';
+        const result = await sequelize.query(getQuery,{ replacements:[packageId]});
+        res.json(result[0]);
 
     } catch (error) {
         console.error('Erreur lors de la récupération de l historique :', error);

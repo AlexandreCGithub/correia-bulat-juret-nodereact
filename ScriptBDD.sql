@@ -95,71 +95,98 @@ EXECUTE FUNCTION update_question_history();
 
 
 
-INSERT INTO LearningPackage (Nom_LP, Description_LP) VALUES
-('Culture_cine', 'Learning Package dédié à la culture cinématographique'),
-('Culture_music', 'Learning Package dédié à la culture musicale'),
-('Culture_archi', 'Learning Package dédié à la culture architecturale'),
-('Culture_visuels', 'Learning Package dédié aux arts visuels'),
-('Culture_litt', 'Learning Package dédié à la littérature');
+INSERT INTO LearningPackage (Nom_LP, Description_LP) VALUES ('Capitales des Pays', 'Questions sur les capitales des pays');
+INSERT INTO LearningPackage (Nom_LP, Description_LP) VALUES ('Musique', 'Questions sur la musique');
+INSERT INTO LearningPackage (Nom_LP, Description_LP) VALUES ('Films', 'Questions sur les films');
+INSERT INTO LearningPackage (Nom_LP, Description_LP) VALUES ('Littérature', 'Questions sur la littérature');
 
 INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP) VALUES
-('Qui a réalisé le film "Citizen Kane"?', 'Orson Welles', 0, 1),
-('Quel film a remporté l Oscar du meilleur film en 1994?', 'Forrest Gump', 0, 1),
-('Dans quel film la phrase "Je suis ton père" est-elle célèbre?', 'Star Wars: L Empire contre-attaque', 0, 1),
-('Quelle actrice a joué dans "Breakfast at Tiffany s"?', 'Audrey Hepburn', 0, 1),
-('Quel est le premier film de la franchise James Bond?', 'James Bond 007 contre Dr. No', 0, 1),
-('Quel réalisateur est connu pour "Pulp Fiction" et "Kill Bill"?', 'Quentin Tarantino', 0, 1),
-('Nommez un film célèbre de science-fiction des années 80.', 'Blade Runner', 0, 1),
-('Quel film est basé sur le roman "Le Parrain" de Mario Puzo?', 'Le Parrain', 0, 1),
-('Qui a remporté l Oscar de la meilleure actrice en 2000?', 'Julia Roberts', 0, 1),
-('Quel film a popularisé la réplique "Here s Johnny!"?', 'Shining', 0, 1);
-
-
-INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP) VALUES
-('Qui est le compositeur de la 5ème symphonie de Beethoven?', 'Ludwig van Beethoven', 0, 2),
-('Quel groupe a enregistré l album The Dark Side of the Moon?', 'Pink Floyd', 0, 2),
-('De quel pays vient le reggae?', 'Jamaïque', 0, 2),
-('Qui a chanté Like a Rolling Stone?', 'Bob Dylan', 0, 2),
-('Quel est le vrai nom de Lady Gaga?', 'Stefani Joanne Angelina Germanotta', 0, 2),
-('Quel est le genre de musique associé à Elvis Presley?', 'Rock and Roll', 0, 2),
-('Qui a composé les Quatre Saisons?', 'Antonio Vivaldi', 0, 2),
-('Quelle chanteuse est connue pour Single Ladies (Put a Ring on It)?', 'Beyoncé', 0, 2),
-('Qui est le leader du groupe U2?', 'Bono', 0, 2),
-('Quel artiste est célèbre pour son album Thriller?', 'Michael Jackson', 0, 2);
+('Quelle est la capitale de la France ?', 'Paris', 0, 1),
+('Quelle est la capitale de l Espagne ?', 'Madrid', 0, 1),
+('Quelle est la capitale de l Italie ?', 'Rome', 0, 1),
+('Quelle est la capitale du Canada ?', 'Ottawa', 0, 1),
+('Quelle est la capitale de l Allemagne ?', 'Berlin', 0, 1),
+('Quelle est la capitale du Japon ?', 'Tokyo', 0, 1),
+('Quelle est la capitale de l Inde ?', 'New Delhi', 0, 1),
+('Quelle est la capitale de l Australie ?', 'Canberra', 0, 1),
+('Quelle est la capitale de la Russie ?', 'Moscou', 0, 1),
+('Quelle est la capitale du Brésil ?', 'Brasília', 0, 1),
+('Quelle est la capitale de la Chine ?', 'Pékin', 0, 1),
+('Quelle est la capitale de l Argentine ?', 'Buenos Aires', 0, 1),
+('Quelle est la capitale du Portugal ?', 'Lisbonne', 0, 1),
+('Quelle est la capitale de l Égypte ?', 'Le Caire', 0, 1),
+('Quelle est la capitale de la Turquie ?', 'Ankara', 0, 1),
+('Quelle est la capitale de la Grèce ?', 'Athènes', 0, 1),
+('Quelle est la capitale du Mexique ?', 'Mexico', 0, 1),
+('Quelle est la capitale du Nigeria ?', 'Abuja', 0, 1),
+('Quelle est la capitale de l Iran ?', 'Téhéran', 0, 1),
+('Quelle est la capitale du Pakistan ?', 'Islamabad', 0, 1);
 
 INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP) VALUES
-('Qui a conçu le Guggenheim Museum à Bilbao?', 'Frank Gehry', 0, 3),
-('Quelle est la caractéristique principale de l architecture gothique?', 'Les arcs-boutants', 0, 3),
-('Dans quelle ville se trouve la Sagrada Familia?', 'Barcelone', 0, 3),
-('Quel architecte a conçu la Fallingwater House?', 'Frank Lloyd Wright', 0, 3),
-('Le Burj Khalifa est situé dans quelle ville?', 'Dubaï', 0, 3),
-('Qui est l architecte derrière le Louvre Pyramid?', 'Ieoh Ming Pei', 0, 3),
-('Le terme Brutalisme vient de quel mot français?', 'Béton brut', 0, 3),
-('Quel est le style architectural prédominant du château de Versailles?', 'Baroque', 0, 3),
-('Quel célèbre architecte a conçu le plan de la ville de Brasilia?', 'Oscar Niemeyer', 0, 3),
-('Le Taj Mahal est un exemple de quel style architectural?', 'Moghul', 0, 3);
+('Qui a chanté Bohemian Rhapsody ?', 'Queen', 0, 2),
+('Quel instrument Yo-Yo Ma joue-t-il ?', 'Violoncelle', 0, 2),
+('Quel est le genre musical associé à Elvis Presley ?', 'Rock and Roll', 0, 2),
+('Quel artiste a interprété la chanson Thriller ?', 'Michael Jackson', 0, 2),
+('Quel est le nom complet du groupe ABBA ?', 'ABBA est l acronyme des prénoms des membres du groupe : Agnetha, Björn, Benny et Anni-Frid', 0, 2),
+('Quel instrument Miles Davis jouait-il ?', 'Trompette', 0, 2),
+('Quel album a popularisé le groupe Nirvana ?', 'Nevermind', 0, 2),
+('Quel est le nom du chanteur principal du groupe U2 ?', 'Bono', 0, 2),
+('De quel pays est originaire le groupe musical The Beatles ?', 'Royaume-Uni', 0, 2),
+('Quelle est la chanson la plus vendue de tous les temps ?', 'White Christmas de Bing Crosby', 0, 2),
+('Quel est le nom complet du rappeur Eminem ?', 'Marshall Bruce Mathers III', 0, 2),
+('Quel est l instrument principal de Jimi Hendrix ?', 'Guitare électrique', 0, 2),
+('Quel est le nom du premier album studio de Michael Jackson en solo ?', 'Got to Be There', 0, 2),
+('Quelle chanson a été interprétée par Whitney Houston dans le film The Bodyguard ?', 'I Will Always Love You', 0, 2),
+('Quel est le nom du groupe formé par Freddie Mercury ?', 'Queen', 0, 2),
+('Quel est le nom du dernier album studio des Beatles ?', 'Let It Be', 0, 2),
+('Qui a interprété la chanson Hotel California ?', 'Eagles', 0, 2),
+('Quel est le nom du groupe derrière l album The Dark Side of the Moon ?', 'Pink Floyd', 0, 2),
+('Quelle chanson a popularisé le groupe Bee Gees ?', 'Stayin Alive', 0, 2),
+('Quel est le nom du compositeur de la chanson Moonlight Sonata ?', 'Ludwig van Beethoven', 0, 2);
 
 INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP) VALUES
-('Qui a peint La Joconde?', 'Léonard de Vinci', 0, 4),
-('Quel mouvement artistique est associé à Claude Monet?', 'Impressionnisme', 0, 4),
-('Qui est l artiste derrière la sculpture du David?', 'Michel-Ange', 0, 4),
-('Quel est le nom de l appareil conçu par Louis Daguerre?', 'Daguerréotype', 0, 4),
-('Quel artiste a créé la série de peintures Les Nymphéas?', 'Claude Monet', 0, 4),
-('Qui est l auteur de la photographie Migrant Mother pendant la Grande Dépression?', 'Dorothea Lange', 0, 4),
-('Dans quelle ville se trouve la galerie Uffizi?', 'Florence', 0, 4),
-('Qui a peint La Nuit étoilée?', 'Vincent van Gogh', 0, 4),
-('Quel peintre est célèbre pour ses tableaux de paysages américains du XIXe siècle?', 'Albert Bierstadt', 0, 4),
-('Quelle est la technique principale utilisée dans l art de la tapisserie?', 'Tissage', 0, 4);
-
+('Quel film a remporté l Oscar du meilleur film en 1994 ?', 'Forrest Gump', 0, 3),
+('Qui a réalisé le film Inception ?', 'Christopher Nolan', 0, 3),
+('Quel est le film gagnant du Prix du Public au Festival de Cannes en 2019 ?', 'Les Misérables', 0, 3),
+('Qui a joué le rôle de Neo dans The Matrix ?', 'Keanu Reeves', 0, 3),
+('Quel film a remporté le premier Oscar du meilleur film en 1929 ?', 'Les Ailes', 0, 3),
+('Qui a réalisé le film Pulp Fiction ?', 'Quentin Tarantino', 0, 3),
+('Quel est le nom du vaisseau spatial dans la série de films Star Wars ?', 'Millennium Falcon', 0, 3),
+('Quel est le premier film de la trilogie Le Seigneur des Anneaux ?', 'La Communauté de l Anneau', 0, 3),
+('Qui a joué le rôle de Jack Dawson dans le film Titanic ?', 'Leonardo DiCaprio', 0, 3),
+('Quel film a remporté l Oscar du meilleur film en 2020 ?', 'Parasite', 0, 3),
+('Qui a réalisé le film The Dark Knight ?', 'Christopher Nolan', 0, 3),
+('Quel est le nom du personnage principal dans le film Fight Club ?', 'Tyler Durden', 0, 3),
+('Quel film a remporté l Oscar du meilleur film en 2016 ?', 'Spotlight', 0, 3),
+('Qui a joué le rôle de Vito Corleone dans Le Parrain ?', 'Marlon Brando', 0, 3),
+('Quel est le nom du robot dans le film Wall-E ?', 'Wall-E', 0, 3),
+('Qui a réalisé le film Jurassic Park ?', 'Steven Spielberg', 0, 3),
+('Quel est le nom du personnage principal dans Forest Gump ?', 'Forest Gump', 0, 3),
+('Quel film a remporté l Oscar du meilleur film en 2010 ?', 'Démineurs', 0, 3),
+('Qui a joué le rôle de Wolverine dans la série de films X-Men ?', 'Hugh Jackman', 0, 3),
+('Quel est le nom du réalisateur du film Blade Runner ?', 'Ridley Scott', 0, 3);
 
 INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP) VALUES
-('Qui a écrit "1984"?', 'George Orwell', 0, 5),
-('Dans quel roman peut-on trouver le personnage d Elizabeth Bennet?', 'Orgueil et Préjugés', 0, 5),
-('Qui est l auteur des "Misérables"?', 'Victor Hugo', 0, 5),
-('Quel poète a écrit "The Raven"?', 'Edgar Allan Poe', 0, 5),
-('Qui a écrit "À la recherche du temps perdu"?', 'Marcel Proust', 0, 5),
-('Quel est le premier roman de Gabriel García Márquez?', 'La Hojarasca', 0, 5),
-('Qui a écrit "Le Vieil Homme et la Mer"?', 'Ernest Hemingway', 0, 5),
-('Quel roman de Jane Austen se déroule principalement à Bath?', 'Persuasion', 0, 5),
-('Qui est l auteur de "Crime et Châtiment"?', 'Fiodor Dostoïevski', 0, 5),
-('Dans quel livre trouve-t-on le personnage de Holden Caulfield?', 'L Attrape-cœurs', 0, 5);
+('Qui a écrit 1984 ?', 'George Orwell', 0, 4),
+('Quel est le nom du protagoniste dans Le Petit Prince ?', 'Le Petit Prince', 0, 4),
+('Quel écrivain a écrit L Odyssée ?', 'Homère', 0, 4),
+('Quel est le titre du livre écrit par Harper Lee et publié en 1960 ?', 'Ne tirez pas sur l oiseau moqueur', 0, 4),
+('Qui est l auteur de Don Quichotte ?', 'Miguel de Cervantes', 0, 4),
+('Quel est le nom du roman de Victor Hugo publié en 1862 ?', 'Les Misérables', 0, 4),
+('Qui est l auteur de la pièce de théâtre Hamlet ?', 'William Shakespeare', 0, 4),
+('Quel est le titre de l oeuvre majeure de Franz Kafka publiée à titre posthume ?', 'Le Procès', 0, 4),
+('Quel écrivain est connu pour son roman Guerre et Paix ?', 'Léon Tolstoï', 0, 4),
+('Quel est le nom de la trilogie de J.R.R. Tolkien ?', 'Le Seigneur des Anneaux', 0, 4),
+('Qui est l auteur de la série Harry Potter ?', 'J.K. Rowling', 0, 4),
+('Quel est le titre de la pièce de théâtre de Molière qui met en scène le personnage d Harpagon ?', 'L Avare', 0, 4),
+('Quel écrivain a écrit Les Trois Mousquetaires ?', 'Alexandre Dumas', 0, 4),
+('Quel est le nom du personnage principal dans le livre Le Comte de Monte-Cristo ?', 'Edmond Dantès', 0, 4),
+('Qui a écrit Orgueil et Préjugés ?', 'Jane Austen', 0, 4),
+('Quel est le nom du recueil de poèmes écrit par Charles Baudelaire ?', 'Les Fleurs du Mal', 0, 4),
+('Qui est l auteur de Crime et Châtiment ?', 'Fiodor Dostoïevski', 0, 4),
+('Quel écrivain a créé le personnage de Sherlock Holmes ?', 'Arthur Conan Doyle', 0, 4),
+('Quel est le titre du roman dystopique écrit par Aldous Huxley ?', 'Le Meilleur des mondes', 0, 4),
+('Qui est l auteur de la pièce de théâtre Roméo et Juliette ?', 'William Shakespeare', 0, 4);
+
+
+

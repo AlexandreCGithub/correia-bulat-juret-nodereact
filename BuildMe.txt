@@ -1,0 +1,22 @@
+Alexandre CORREIA
+Mathis JUVET-RAFFIN
+Mathilde BULAT
+
+Ce répertoire github contient le dossier back "ACorreia_NJS" et le dossier front "ACorreia_Ang", ainsi que le guide guide_readme.pdf, ce fichier BuildMe.txt, et le fichier ScriptBDD.sql
+
+Le dossier back ne contient pas son dossier node_modules car on a rajouté un .gitignore
+Le dossier front ne contient pas son dossier node_modules, le .vscode, le .idea et .angular qui sont ignorés par un fichier .gitignore automatiquement présent
+
+FONCTIONNEMENT
+Pour faire fonctionner ce projet après l'avoir récupéré:
+
+- Ajouter les modules manuellement, ou télécharger ce projet sur un projet vierge contenant les modules nécessaires
+
+- Dans pgadmin4 (il faut avoir postgresql, pgadmin4), créer une database nommée exactement LearningFactDb_arti dans Databases. Laisser l'owner en postgres, ne modifier aucun paramètre par défaut lors de la création de la database à part le nom.
+Puis dans la database LearningFactDb_arti utiliser Query tool pour run le script ScriptBDD.sql fourni.
+La connexion à la BDD se fait avec les éléments du fichier sequelize.ts dans le back, le consulter si besoin mais normalement le script crée le bon user pour se connecter et toutes les tables et les remplit.
+
+- Il suffit ensuite de faire dans un terminal en se plaçant sur le dossier back : node app.js
+dans un terminal en se plaçant sur le dossier front : ng serve
+
+- La page d'accueil est alors accessible à l'addresse http://localhost:4200/#/

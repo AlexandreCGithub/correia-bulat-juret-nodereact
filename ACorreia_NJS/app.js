@@ -38,8 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var sequelize_1 = require("./sequelize");
-var swaggerJsdoc = require("swagger-jsdoc");
-var swaggerUi = require("swagger-ui-express");
+var swaggerJsdoc = require('swagger-jsdoc');
+var swaggerUi = require('swagger-ui-express');
 sequelize_1.default.authenticate()
     .then(function () {
     console.log('Connexion à la base de données LearningFactDb_arti réussie');
@@ -92,18 +92,18 @@ app.get('/api/learningpackages-all', function (req, res) { return __awaiter(void
                 all_lp = _a.sent();
                 learningpackages = all_lp[0];
                 res.json(learningpackages);
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
                 console.error('Erreur lors de la récupération des packages :', error_1);
                 res.status(500).json({ error: 'Erreur lors de la récupération des packages.' });
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.get('/api/learningpackage/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var packageId, result, learningpackage, error_2;
+    var packageId, getQuery, result, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -112,47 +112,50 @@ app.get('/api/learningpackage/:id', function (req, res) { return __awaiter(void 
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM LearningPackage where Id_LP=' + packageId)];
+                getQuery = 'SELECT * FROM LearningPackage where Id_LP = ?';
+                return [4 /*yield*/, sequelize_1.default.query(getQuery, { replacements: [packageId] })];
             case 2:
                 result = _a.sent();
-                learningpackage = result[0];
-                res.json(learningpackage);
-                return [2 /*return*/];
+                res.json(result[0]);
+                return [3 /*break*/, 4];
             case 3:
                 error_2 = _a.sent();
                 console.error('Erreur lors de la récupération du package :', error_2);
                 res.status(500).json({ error: 'Erreur lors de la récupération du package.' });
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.delete('/api/delete-learningpackage/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var packageId, error_3;
+    var packageId, deleteQuery, result, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 packageId = req.params.id;
                 //On a activé le ON DELETE CASCADE donc on peut supprimer une table, cela supprimera les questions associées
+                //Gestion sécurisée du paramètre pour éviter injections
                 console.log("DELETE learning package par id atteint dans le back ", packageId);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('DELETE FROM LearningPackage WHERE Id_LP=' + packageId)];
+                deleteQuery = "DELETE FROM LearningPackage WHERE Id_LP = ?";
+                return [4 /*yield*/, sequelize_1.default.query(deleteQuery, { replacements: [packageId] })];
             case 2:
-                _a.sent();
-                return [2 /*return*/];
+                result = _a.sent();
+                res.status(200).json({ message: 'Package delete avec succès' });
+                return [3 /*break*/, 4];
             case 3:
                 error_3 = _a.sent();
                 console.error('Erreur lors de la suppression du package :', packageId, error_3);
                 res.status(500).json({ error: 'Erreur lors de la suppression du package.' });
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.post('/api/add-learningpackage', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, nom_lp, description_lp, safeNomLp, safeDescriptionLp, result, error_4;
+    var _a, nom_lp, description_lp, query, result, error_4;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -161,11 +164,11 @@ app.post('/api/add-learningpackage', function (req, res) { return __awaiter(void
             case 1:
                 _b.trys.push([1, 3, , 4]);
                 _a = req.body, nom_lp = _a.nom_lp, description_lp = _a.description_lp;
-                safeNomLp = sequelize_1.default.escape(nom_lp);
-                safeDescriptionLp = sequelize_1.default.escape(description_lp);
-                return [4 /*yield*/, sequelize_1.default.query("INSERT INTO LearningPackage (nom_lp, description_lp) VALUES (".concat(safeNomLp, ", ").concat(safeDescriptionLp, ")"))];
+                query = 'INSERT INTO LearningPackage (nom_lp, description_lp) VALUES (?, ?)';
+                return [4 /*yield*/, sequelize_1.default.query(query, { replacements: [nom_lp, description_lp] })];
             case 2:
                 result = _b.sent();
+                console.log('Nouveau Learning Package créé :', result[0]);
                 res.status(201).json({ message: 'Package ajouté avec succès', id: result[0] });
                 return [3 /*break*/, 4];
             case 3:
@@ -178,7 +181,7 @@ app.post('/api/add-learningpackage', function (req, res) { return __awaiter(void
     });
 }); });
 app.put('/api/update-learningpackage', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, nom_lp, description_lp, id_lp, safeNomLp, safeDescriptionLp, safeIdLp, result, error_5;
+    var _a, nom_lp, description_lp, id_lp, query, result, error_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -187,10 +190,8 @@ app.put('/api/update-learningpackage', function (req, res) { return __awaiter(vo
             case 1:
                 _b.trys.push([1, 3, , 4]);
                 _a = req.body, nom_lp = _a.nom_lp, description_lp = _a.description_lp, id_lp = _a.id_lp;
-                safeNomLp = sequelize_1.default.escape(nom_lp);
-                safeDescriptionLp = sequelize_1.default.escape(description_lp);
-                safeIdLp = sequelize_1.default.escape(id_lp);
-                return [4 /*yield*/, sequelize_1.default.query("UPDATE LearningPackage SET nom_lp = ".concat(safeNomLp, ", description_lp = ").concat(safeDescriptionLp, " WHERE id_lp = ").concat(safeIdLp))];
+                query = 'UPDATE LearningPackage SET nom_lp = ?, description_lp = ? WHERE id_lp = ?';
+                return [4 /*yield*/, sequelize_1.default.query(query, { replacements: [nom_lp, description_lp, id_lp] })];
             case 2:
                 result = _b.sent();
                 res.status(200).json({ message: 'Package MAJ avec succès' });
@@ -206,7 +207,7 @@ app.put('/api/update-learningpackage', function (req, res) { return __awaiter(vo
 }); });
 //Routes pour questions
 app.get('/api/questionsof-learningpackage/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var packageId, result, questions, error_6;
+    var packageId, getQuery, result, error_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -215,12 +216,12 @@ app.get('/api/questionsof-learningpackage/:id', function (req, res) { return __a
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM Questions where Id_LP=' + packageId)];
+                getQuery = 'SELECT * FROM Questions where Id_LP = ?';
+                return [4 /*yield*/, sequelize_1.default.query(getQuery, { replacements: [packageId] })];
             case 2:
                 result = _a.sent();
-                questions = result[0];
-                res.json(questions);
-                return [2 /*return*/];
+                res.json(result[0]);
+                return [3 /*break*/, 4];
             case 3:
                 error_6 = _a.sent();
                 console.error('Erreur lors de la récupération des questions du package :', packageId, error_6);
@@ -231,7 +232,7 @@ app.get('/api/questionsof-learningpackage/:id', function (req, res) { return __a
     });
 }); });
 app.get('/api/question/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var questionId, result, question, error_7;
+    var questionId, getQuery, result, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -240,23 +241,23 @@ app.get('/api/question/:id', function (req, res) { return __awaiter(void 0, void
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM Questions where Id_Question=' + questionId)];
+                getQuery = 'SELECT * FROM Questions where Id_Question = ?';
+                return [4 /*yield*/, sequelize_1.default.query(getQuery, { replacements: [questionId] })];
             case 2:
                 result = _a.sent();
-                question = result[0];
-                res.json(question);
-                return [2 /*return*/];
+                res.json(result[0]);
+                return [3 /*break*/, 4];
             case 3:
                 error_7 = _a.sent();
                 console.error('Erreur lors de la récupération de la question :', questionId, error_7);
                 res.status(500).json({ error: 'Erreur lors de la récupération de la question.' });
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.delete('/api/delete-question/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var questionId, error_8;
+    var questionId, deleteQuery, result, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -265,21 +266,23 @@ app.delete('/api/delete-question/:id', function (req, res) { return __awaiter(vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('DELETE FROM Questions WHERE Id_Question=' + questionId)];
+                deleteQuery = 'DELETE FROM Questions WHERE Id_Question = ?';
+                return [4 /*yield*/, sequelize_1.default.query(deleteQuery, { replacements: [questionId] })];
             case 2:
-                _a.sent();
-                return [2 /*return*/];
+                result = _a.sent();
+                res.status(200).json({ message: 'Question delete avec succès' });
+                return [3 /*break*/, 4];
             case 3:
                 error_8 = _a.sent();
                 console.error('Erreur lors de la suppression de la question :', questionId, error_8);
                 res.status(500).json({ error: 'Erreur lors de la suppression de la question.' });
-                return [2 /*return*/];
+                return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.post('/api/add-question', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, intitule_question, reponse_question, id_lp, safe_id_lp, safe_intitule_question, safe_reponse_question, result, error_9;
+    var _a, intitule_question, reponse_question, id_lp, postQuery, result, error_9;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -288,12 +291,11 @@ app.post('/api/add-question', function (req, res) { return __awaiter(void 0, voi
             case 1:
                 _b.trys.push([1, 3, , 4]);
                 _a = req.body, intitule_question = _a.intitule_question, reponse_question = _a.reponse_question, id_lp = _a.id_lp;
-                safe_id_lp = sequelize_1.default.escape(id_lp);
-                safe_intitule_question = sequelize_1.default.escape(intitule_question);
-                safe_reponse_question = sequelize_1.default.escape(reponse_question);
-                return [4 /*yield*/, sequelize_1.default.query("INSERT INTO Questions (intitule_question, reponse_question,coef_question,id_lp) VALUES (".concat(safe_intitule_question, ", ").concat(safe_reponse_question, ",0 ,").concat(safe_id_lp, ")"))];
+                postQuery = 'INSERT INTO Questions (intitule_question, reponse_question,coef_question,id_lp) VALUES (?,?,?,?)';
+                return [4 /*yield*/, sequelize_1.default.query(postQuery, { replacements: [intitule_question, reponse_question, 0, id_lp] })];
             case 2:
                 result = _b.sent();
+                console.log('Nouveau Learning Package créé :', result);
                 res.status(201).json({ message: 'Question ajoutée avec succès', id: result[0] });
                 return [3 /*break*/, 4];
             case 3:
@@ -307,7 +309,7 @@ app.post('/api/add-question', function (req, res) { return __awaiter(void 0, voi
 }); });
 //Cette route est utilisée pour update les scores des questions, ou les infos
 app.put('/api/update-question', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, intitule_question, reponse_question, coef_question, id_question, id_lp, safe_id_lp, safe_intitule_question, safe_reponse_question, safe_coef_question, safe_id_question, result, error_10;
+    var _a, intitule_question, reponse_question, coef_question, id_question, id_lp, putQuery, result, error_10;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -316,12 +318,8 @@ app.put('/api/update-question', function (req, res) { return __awaiter(void 0, v
             case 1:
                 _b.trys.push([1, 3, , 4]);
                 _a = req.body, intitule_question = _a.intitule_question, reponse_question = _a.reponse_question, coef_question = _a.coef_question, id_question = _a.id_question, id_lp = _a.id_lp;
-                safe_id_lp = sequelize_1.default.escape(id_lp);
-                safe_intitule_question = sequelize_1.default.escape(intitule_question);
-                safe_reponse_question = sequelize_1.default.escape(reponse_question);
-                safe_coef_question = sequelize_1.default.escape(coef_question);
-                safe_id_question = sequelize_1.default.escape(id_question);
-                return [4 /*yield*/, sequelize_1.default.query("UPDATE Questions SET intitule_question = ".concat(safe_intitule_question, ", reponse_question = ").concat(safe_reponse_question, ", coef_question = ").concat(safe_coef_question, " WHERE id_question = ").concat(safe_id_question))];
+                putQuery = 'UPDATE Questions SET intitule_question = ?, reponse_question = ?, coef_question = ? WHERE id_question = ?';
+                return [4 /*yield*/, sequelize_1.default.query(putQuery, { replacements: [intitule_question, reponse_question, coef_question, id_question] })];
             case 2:
                 result = _b.sent();
                 res.status(200).json({ message: 'Question MAJ avec succès' });
@@ -337,7 +335,7 @@ app.put('/api/update-question', function (req, res) { return __awaiter(void 0, v
 }); });
 //Route pour l'historique
 app.get('/api/historique-package/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var packageId, reponse, histo, error_11;
+    var packageId, getQuery, result, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -346,12 +344,12 @@ app.get('/api/historique-package/:id', function (req, res) { return __awaiter(vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sequelize_1.default.query('SELECT * FROM Historique_Modif_Questions WHERE Id_LP=' + packageId)];
+                getQuery = 'SELECT * FROM Historique_Modif_Questions WHERE Id_LP = ?';
+                return [4 /*yield*/, sequelize_1.default.query(getQuery, { replacements: [packageId] })];
             case 2:
-                reponse = _a.sent();
-                histo = reponse[0];
-                res.json(histo);
-                return [2 /*return*/];
+                result = _a.sent();
+                res.json(result[0]);
+                return [3 /*break*/, 4];
             case 3:
                 error_11 = _a.sent();
                 console.error('Erreur lors de la récupération de l historique :', error_11);
