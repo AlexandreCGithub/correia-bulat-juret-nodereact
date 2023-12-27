@@ -14,7 +14,9 @@ export class MenuNavBarComponent {
   constructor(private LPservice: LessonPackageService) {}
 
   ngOnInit() {
-    console.log('on init atteint');
+    console.log('on init menu nav bar atteint');
+
+    //Récupération des LP
     this.LPservice.getLP().subscribe(
       (data) => {
         this.learningPackages = data;
@@ -24,5 +26,5 @@ export class MenuNavBarComponent {
       }
     );
   }
-
 }
+

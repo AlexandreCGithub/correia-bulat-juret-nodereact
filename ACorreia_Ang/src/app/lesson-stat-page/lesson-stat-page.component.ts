@@ -9,6 +9,7 @@ import {LessonPackageService} from "../lessonpackageservice";
   templateUrl: './lesson-stat-page.component.html',
   styleUrls: ['./lesson-stat-page.component.css']
 })
+
 export class LessonStatPageComponent {
   histo :Element_Historique[] = [];
   id_package:number = -1;
@@ -20,41 +21,45 @@ export class LessonStatPageComponent {
               private router: Router) {}
 
   ngOnInit() {
-    console.log('on init atteint');
+    console.log('on init de stat page atteint');
+
+    //On récupère le package
+    this.activatedRoute.params.subscribe(params => {
+        this.id_package = +params['id'];
+        this.LPservice.getLPwithid(this.id_package).subscribe(
+          (data) => {
+            this.currentLearningPackage = data;
+            console.log('LP de la page stat',data);
+          },
+          (error) => {
+            console.error('Une erreur s\'est produite lors de la récupération du learning package :', error);
+          }
+        );
+      }
+    );
+
+    //On récupère l'historique du package
     this.activatedRoute.params.subscribe(params => {
       this.id_package = +params['id'];
       this.Sservice.getHistorique(this.id_package).subscribe(
         (data) => {
           this.histo = data;
-          console.log(data);
+          console.log('historique de la page stat',data);
         },
         (error) => {
           console.error('Une erreur s\'est produite lors de la récupération de l historique :', error);
         }
       );
     });
-
-    this.activatedRoute.params.subscribe(params => {
-      this.id_package = +params['id'];
-      this.LPservice.getLPwithid(this.id_package).subscribe(
-        (data) => {
-          this.currentLearningPackage = data;
-          console.log(data);
-        },
-        (error) => {
-          console.error('Une erreur s\'est produite lors de la récupération du learning package :', error);
-        }
-      );
-      }
-    );
-
-
   }
+
+  //Formatage de la date sous forme de string
   formatDateTime(dateTimeString: string): string {
     const dateTime = new Date(dateTimeString);
     return `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
   }
 
+  //couleur en fonction de la diff de coeff
   getColor(diff:number): string {
     if (diff > 0) {
       return 'green'; // Si le coefficient augmente, couleur verte
@@ -65,16 +70,18 @@ export class LessonStatPageComponent {
     }
   }
 
+  //Texte en fonction de la diff de coeff
   getString(coefAvant: number, coefApres: number): string {
     if (coefAvant < coefApres) {
-      return 'Progression'; // Si le coefficient augmente, couleur verte
+      return 'Progression'; // Si le coefficient augmente
     } else if (coefAvant > coefApres) {
-      return 'Régression'; // Si le coefficient régresse, couleur rouge
+      return 'Régression'; // Si le coefficient régresse
     } else {
-      return 'Stagnation'; // Si le coefficient stagne, couleur orange
+      return 'Stagnation'; // Si le coefficient stagne
     }
   }
 
+  //Calcule la moyenne d'evolutions de coeff du package
   calculerMoyenneEvolutions(): number {
     let totalEvolutions = 0;
 
@@ -87,6 +94,7 @@ export class LessonStatPageComponent {
     return moyenne;
   }
 
+  //Retourne le nombre de fois qu'une questions spécifique est apparue
   nombreQuestion(element: Element_Historique): number {
     let count = 0;
 
@@ -99,6 +107,7 @@ export class LessonStatPageComponent {
     return(count);
   }
 
+  //Retourne le nombre de questions uniques du package apparues dans l'historique
   nombreQuestionsUniques(): number {
     const uniqueQuestions = new Set<string>();
     for (const element of this.histo) {
@@ -107,6 +116,7 @@ export class LessonStatPageComponent {
     return uniqueQuestions.size;
   }
 
+  //Coef moyen des questions
   coefMoyenQuestion(element: Element_Historique): number
   {
     let count = 0;

@@ -1,6 +1,9 @@
-<div *ngIf="histo&&currentLearningPackage">
+<div *ngIf="currentLearningPackage">
+
+  <div *ngIf="histo&&histo.length>0">
   <div class="container-fluid">
     <div class="row">
+
       <div class="col-md-6">
         <h3>Historique de {{histo[0].nom_lp}}</h3>
         <div class="element-group" *ngFor="let element of histo">
@@ -15,6 +18,7 @@
           <hr>
         </div>
       </div>
+
       <div class="col-md-6">
         <h3>Au total sur le package:</h3>
         <p>Evolution moyenne: {{calculerMoyenneEvolutions()}} %</p>
@@ -29,8 +33,15 @@
           <hr>
         </div>
       </div>
+
     </div>
   </div>
+  </div>
+
+  <div *ngIf="!(histo&&histo.length>0)" class="alert alert-info">Ce package n'a pas encore d'historique d'entraînement. Entraînez-vous dessus</div>
+
 </div>
+
+<div *ngIf="!currentLearningPackage" class="alert alert-info">Ce package ne semble pas exister</div>
 
 

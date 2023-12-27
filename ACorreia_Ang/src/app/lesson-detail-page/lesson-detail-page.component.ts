@@ -25,14 +25,11 @@ export class LessonDetailPageComponent implements OnInit {
 
 
   constructor(private activatedRoute: ActivatedRoute,
-              private router : Router,
               private LPservice:LessonPackageService,
-              private Qservice: QuestionService)
-  {
-
-  }
+              private Qservice: QuestionService) {}
   ngOnInit()
   {
+    //On récupère les questions
     this.activatedRoute.params.subscribe(params => {
       this.id_package = +params['id'];
       this.Qservice.getQuestionOfLP(this.id_package).subscribe(
@@ -47,6 +44,7 @@ export class LessonDetailPageComponent implements OnInit {
       }
     );
 
+    //On récupère le LP courant
     this.activatedRoute.params.subscribe(params => {
         this.id_package = +params['id'];
         this.LPservice.getLPwithid(this.id_package).subscribe(
@@ -66,6 +64,8 @@ export class LessonDetailPageComponent implements OnInit {
     this.updateQSuccess = this.Questions.map(() => false);
   }
 
+
+  //Fonction de création d'une question
   createQuestion() {
     const newQuestion: CreatedQuestion = {
       intitule_question: this.intitule_nouvelle_question,
@@ -80,6 +80,7 @@ export class LessonDetailPageComponent implements OnInit {
     window.location.reload();
   }
 
+  //Fonction de suppression d'une question
   deleteQuestion(q: any) {
     // Confirmation dialog
     const isConfirmed = confirm('Etes-vous sûr de vouloir supprimer cette question ?');
@@ -89,10 +90,11 @@ export class LessonDetailPageComponent implements OnInit {
       this.Qservice.deleteQuestion(q.id_question).subscribe();
       window.location.reload();
     } else {
-      console.log('Suppressio annulée par utilisateur');
+      console.log('Suppression annulée par utilisateur');
     }
   }
 
+  //Fonction de MAJ d'une question
   updateLearningPackage()
   {
     console.log('update Learning Package atteint dans le back')
@@ -101,8 +103,16 @@ export class LessonDetailPageComponent implements OnInit {
     //On n'autorise la MAJ que si le learningPackage est chargé
     if (this.currentLearningPackage !== null) {
       console.log('MAJ déclenchée pour le LP')
-      this.LPservice.putLp(this.currentLearningPackage as LearningPackage).subscribe();
-      this.updateLPSuccess = true;
+      this.LPservice.putLp(this.currentLearningPackage as LearningPackage)
+        .subscribe(
+          () => {
+            this.updateLPSuccess = true;
+          },
+          (error) => {
+            console.error('Une erreur s\'est produite lors de la mise à jour du LP :', error);
+            alert('La MAJ semble avoir échoué. Consulter la console du navigateur et du back');
+          }
+        );
     }
     this.showUpdateLPForm = !this.showUpdateLPForm
   }
@@ -112,8 +122,15 @@ export class LessonDetailPageComponent implements OnInit {
     console.log('update Question atteint dans le back')
     if (q !== null) {
       console.log('MAJ déclenchée pour la question')
-      this.Qservice.putQuestion(q).subscribe();
-      this.updateQSuccess[q.id_question-1] = true;
+      this.Qservice.putQuestion(q).subscribe(
+        () => {
+          this.updateQSuccess[q.id_question-1] = true;
+        },
+        (error) => {
+          console.error('Une erreur s\'est produite lors de la mise à jour de la question :', error);
+          alert('La MAJ semble avoir échoué. Consulter la console du navigateur et du back');
+        }
+      );
     }
     this.showUpdateQForm[q.id_question-1] = !this.showUpdateQForm
   }

@@ -1,14 +1,17 @@
-<h4 class="card-title">Page d'administration: liste des LP, en ajouter, cliquer sur un pour modifier/ajouter/supprimer ses questions...</h4>
-<br>
 <div class="container">
-  <div class="row">
+  <h4 class="card-title">Page d'administration: liste des LP, en ajouter, cliquer sur un pour modifier/ajouter/supprimer ses questions...</h4>
+  <br>
+
+
+  <!-- Liste des Learning Packages -->
+  <div class="row" *ngIf="learningPackages && learningPackages.length > 0">
     <div class="col-md-6 mb-4" *ngFor="let p of learningPackages">
       <div class="card shadow">
         <div class="card-body">
           <h3 class="card-title">{{ p.nom_lp }}</h3>
           <p class="card-text">{{ p.description_lp }}</p>
-          <button class="btn btn-primary" (click)="goToDetailsPage(p)">Voir détails, modifier, supprimer/ajouter questions</button>
-          <button class="btn btn-danger ms-2" (click)="deletePackage(p)">
+          <button class="btn btn-primary me-2" [routerLink]="['/lesson-detail/', p.id_lp]">Voir détails, modifier, supprimer/ajouter questions</button>
+          <button class="btn btn-danger" (click)="deletePackage(p)">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -16,6 +19,13 @@
     </div>
   </div>
 
+  <!-- Message si aucun Learning Package -->
+  <div *ngIf="!(learningPackages && learningPackages.length > 0)" class="alert alert-info">
+    Pas de Learning Package. Essayez d'en ajouter.
+  </div>
+
+
+  <!-- Formulaire pour ajouter un Learning Package -->
   <div class="row mt-4">
     <div class="col-md-12">
       <h3>Ajouter un Learning Package</h3>
@@ -24,21 +34,18 @@
       <form #packageForm="ngForm" (ngSubmit)="createLearningPackage()">
         <div class="mb-3">
           <label for="packageName" class="form-label">Package Name</label>
-          <input type="text" class="form-control" id="packageName"
-                 [(ngModel)]="nom_nouveau_lp" name="nom_lp" required>
+          <input type="text" class="form-control" id="packageName" [(ngModel)]="nom_nouveau_lp" name="nom_lp" required>
         </div>
         <div class="mb-3">
           <label for="packageDescription" class="form-label">Description</label>
-          <textarea class="form-control" id="packageDescription"
-                    [(ngModel)]="description_nouveau_lp" name="description_lp" required></textarea>
+          <textarea class="form-control" id="packageDescription" [(ngModel)]="description_nouveau_lp" name="description_lp" required></textarea>
         </div>
         <button type="submit" class="btn btn-success" [disabled]="!packageForm.valid">Create Package</button>
       </form>
     </div>
   </div>
-
-
 </div>
+
 
 
 

@@ -11,12 +11,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class LessonTrainingListPageComponent {
   learningPackages : LearningPackage[] = [];
   selectedQuestionCount: number = 5;
-  constructor(private LPservice: LessonPackageService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {}
+  constructor(private LPservice: LessonPackageService) {}
 
   ngOnInit() {
     console.log('on init atteint');
+    //Récupération des learning package
     this.LPservice.getLP().subscribe(
       (data) => {
         this.learningPackages = data;
@@ -28,12 +27,8 @@ export class LessonTrainingListPageComponent {
     );
   }
 
-  sortLearningPackages() {
-    this.learningPackages.sort((a, b) => b.coef_moyen - a.coef_moyen);
-  }
 
-
-  //On détermine une couleur en fct du coef_moyen
+  //On détermine une couleur rgb en fct du coef_moyen
   getColor(coef_moyen:number) {
     const normalizedCoef = Math.min(100, Math.max(0, coef_moyen)) / 100;
     const red = Math.round(255 * (1 - normalizedCoef));
@@ -41,7 +36,5 @@ export class LessonTrainingListPageComponent {
     const blue = Math.round(255 * (1 - Math.abs(normalizedCoef - 0.5) * 2));
     return `rgb(${red}, ${green}, ${blue})`;
   }
-
-
 
 }

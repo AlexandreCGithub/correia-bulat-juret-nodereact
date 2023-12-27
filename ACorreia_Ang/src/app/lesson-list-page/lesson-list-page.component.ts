@@ -11,15 +11,13 @@ import {CreatedLearningPackage} from "../created-interfaces";
 })
 export class LessonListPageComponent implements OnInit {
   learningPackages : LearningPackage[] = [];
-
   nom_nouveau_lp: string ='';
   description_nouveau_lp: string = '';
-  constructor(private LPservice: LessonPackageService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {}
+  constructor(private LPservice: LessonPackageService) {}
 
   ngOnInit() {
-    console.log('on init atteint');
+    console.log('on init lesson list page atteint');
+    //Récupération des LP
     this.LPservice.getLP().subscribe(
       (data) => {
         this.learningPackages = data;
@@ -30,23 +28,23 @@ export class LessonListPageComponent implements OnInit {
       }
     );
   }
-  goToDetailsPage(p: any) {
-    this.router.navigate(['/lesson-detail/', p.id_lp]);
-  }
 
+  //Fonction de suppression d'un LP
   deletePackage(p: any) {
-    // Confirmation dialog
+
+    //Demande à l'utilisateur
     const isConfirmed = confirm('Etes-vous sûr de vouloir supprimer ce learning package ?');
 
     if (isConfirmed) {
       console.log('Fonction deletePackage atteinte dans le front');
       this.LPservice.deleteLP(p.id_lp).subscribe();
-      window.location.reload();
+      window.location.reload();   //rechargement de la page pour recharger les données mises à jour
     } else {
-      console.log('Deletion cancelled');
+      console.log('Annulé');
     }
   }
 
+  //Fonction d'ajout d'un nouveau LP
   createLearningPackage() {
     const newLearningPackage: CreatedLearningPackage = {
       nom_lp: this.nom_nouveau_lp,
@@ -59,5 +57,4 @@ export class LessonListPageComponent implements OnInit {
     );
     window.location.reload();
   }
-
 }
