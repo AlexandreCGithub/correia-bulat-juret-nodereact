@@ -21,14 +21,19 @@
 
       <div class="col-md-6">
         <h3>Au total sur le package:</h3>
-        <p>Evolution moyenne: {{calculerMoyenneEvolutions()}} %</p>
+        <p>Evolution moyenne par question: {{calculerMoyenneEvolutions()}} %</p>
         <p>Vous avez étudié des questions {{histo.length}} fois</p>
-        <p>Ce package compte {{nombreQuestionsUniques()}} questions</p>
+        <p>Ce package compte {{Questions.length}} questions</p>
+        <p>Dont vous avez étudié {{nombreQuestionsUniquesEtudiees()}} questions différentes</p>
         <hr>
-        <div class="element-group" *ngFor="let element of histo">
-          <p>La question {{element.intitule_question}} a été étudiée {{nombreQuestion(element)}} fois.</p>
-          <p [style.color]="getColor(coefMoyenQuestion(element))">
-            Evolution moyenne de son coef : {{coefMoyenQuestion(element)}} %
+        <div class="element-group" *ngFor="let q of Questions">
+          <p>Id : {{q.id_question}}</p>
+          <p>La question {{q.intitule_question}} a été étudiée {{nombreQuestion(q)}} fois.</p>
+          <p [style.color]="getColor(coefMoyenQuestion(q))">
+            Evolution moyenne de son coef : {{coefMoyenQuestion(q)}} %
+          </p>
+          <p [style.color]="getColor(coefTotalQuestion(q))">
+            Evolution totale de son coef : {{coefTotalQuestion(q)}} %
           </p>
           <hr>
         </div>

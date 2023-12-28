@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import {Element_Historique, LearningPackage} from "../created-interfaces";
+import {Component, OnInit} from '@angular/core';
+import {Element_Historique, LearningPackage, Question} from "../created-interfaces";
 import {StatService} from "../statservice";
+import {QuestionService} from "../questionservice";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LessonPackageService} from "../lessonpackageservice";
+
 
 @Component({
   selector: 'app-lesson-stat-page',
@@ -10,12 +12,13 @@ import {LessonPackageService} from "../lessonpackageservice";
   styleUrls: ['./lesson-stat-page.component.css']
 })
 
-export class LessonStatPageComponent {
+export class LessonStatPageComponent implements OnInit {
   histo :Element_Historique[] = [];
   id_package:number = -1;
   currentLearningPackage: LearningPackage | null = null;
+  Questions: Question[] = [];
 
-  constructor(private Sservice: StatService,
+  constructor(private Sservice: StatService, private Qservice: QuestionService,
               private activatedRoute: ActivatedRoute,
               private LPservice: LessonPackageService,
               private router: Router) {}
@@ -38,7 +41,7 @@ export class LessonStatPageComponent {
       }
     );
 
-    //On récupère l'historique du package
+    //On récupère la liste des questions
     this.activatedRoute.params.subscribe(params => {
       this.id_package = +params['id'];
       this.Sservice.getHistorique(this.id_package).subscribe(
@@ -48,6 +51,20 @@ export class LessonStatPageComponent {
         },
         (error) => {
           console.error('Une erreur s\'est produite lors de la récupération de l historique :', error);
+        }
+      );
+    });
+
+    //On récupère l'historique du package
+    this.activatedRoute.params.subscribe(params => {
+      this.id_package = +params['id'];
+      this.Qservice.getQuestionOfLP(this.id_package).subscribe(
+        (data) => {
+          this.Questions = data;
+          console.log('questions du package',data);
+        },
+        (error) => {
+          console.error('Une erreur s\'est produite lors de la récupération des questions :', error);
         }
       );
     });
@@ -91,16 +108,16 @@ export class LessonStatPageComponent {
     }
 
     const moyenne = totalEvolutions / this.histo.length;
-    return moyenne;
+    return parseFloat(moyenne.toFixed(2));
   }
 
   //Retourne le nombre de fois qu'une questions spécifique est apparue
-  nombreQuestion(element: Element_Historique): number {
+  nombreQuestion(q: Question): number {
     let count = 0;
 
     // Parcours des éléments pour obtenir les statistiques de l'élément spécifique
     for (const e of this.histo) {
-      if (e.intitule_question === element.intitule_question) {
+      if (e.intitule_question === q.intitule_question) {
         count++;
       }
     }
@@ -108,7 +125,7 @@ export class LessonStatPageComponent {
   }
 
   //Retourne le nombre de questions uniques du package apparues dans l'historique
-  nombreQuestionsUniques(): number {
+  nombreQuestionsUniquesEtudiees(): number {
     const uniqueQuestions = new Set<string>();
     for (const element of this.histo) {
       uniqueQuestions.add(element.intitule_question);
@@ -116,15 +133,15 @@ export class LessonStatPageComponent {
     return uniqueQuestions.size;
   }
 
-  //Coef moyen des questions
-  coefMoyenQuestion(element: Element_Historique): number
+  //Coef moyen des questions : evolution moyenne
+  coefMoyenQuestion(q: Question): number
   {
     let count = 0;
     let totalCoefficient = 0;
 
     // Parcours des éléments pour obtenir les statistiques de l'élément spécifique
     for (const e of this.histo) {
-      if (e.intitule_question === element.intitule_question) {
+      if (e.intitule_question === q.intitule_question) {
         count++;
         totalCoefficient += e.coef_apres - e.coef_avant;
       }
@@ -132,4 +149,19 @@ export class LessonStatPageComponent {
     return(totalCoefficient / count);
   }
 
+  //Evolution totale
+  coefTotalQuestion(q: Question)
+  {
+    let count = 0;
+    let totalCoefficient = 0;
+
+    // Parcours des éléments pour obtenir les statistiques de l'élément spécifique
+    for (const e of this.histo) {
+      if (e.intitule_question === q.intitule_question) {
+        count++;
+        totalCoefficient += e.coef_apres - e.coef_avant;
+      }
+    }
+    return(totalCoefficient);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LearningPackage, Question} from "../created-interfaces";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LessonPackageService} from "../lessonpackageservice";
@@ -9,7 +9,7 @@ import {QuestionService} from "../questionservice";
   templateUrl: './lesson-training-page.component.html',
   styleUrls: ['./lesson-training-page.component.css']
 })
-export class LessonTrainingPageComponent {
+export class LessonTrainingPageComponent implements OnInit{
   Questions: Question[] = [];
   randomQuestions: Question[] = [];
   currentQuestionIndex: number = 0;
@@ -59,6 +59,7 @@ export class LessonTrainingPageComponent {
             }
             this.selectRandomQuestions();
             console.log('questions random tirées',this.randomQuestions)
+
           },
           (error) => {
             console.error('Une erreur s\'est produite lors de la récupération des questions :', error);
@@ -113,6 +114,7 @@ export class LessonTrainingPageComponent {
 
   //Fonction pour passer la page à la question suivante
   nextQuestion() {
+    //Mise à jour de la BDD
     this.Qservice.putQuestion(this.randomQuestions[this.currentQuestionIndex]).subscribe(
       (res) => {
         console.log(res);
@@ -134,8 +136,17 @@ export class LessonTrainingPageComponent {
   //si succès signalé
   reponse_su()
   {
-    //On progresse de 20%
-    this.randomQuestions[this.currentQuestionIndex].coef_question += 20;
+    //On progresse de 20%, ou de 10 si le coef est déjà élevé
+    if (this.randomQuestions[this.currentQuestionIndex].coef_question<70)
+    {
+      this.randomQuestions[this.currentQuestionIndex].coef_question += 20;
+    }
+    else
+    {
+      this.randomQuestions[this.currentQuestionIndex].coef_question += 10;
+    }
+    //Limitation à 100
+    if (this.randomQuestions[this.currentQuestionIndex].coef_question>100){this.randomQuestions[this.currentQuestionIndex].coef_question = 100;}
     this.nextQuestion();
   }
 
@@ -152,6 +163,7 @@ export class LessonTrainingPageComponent {
       {
         this.randomQuestions[this.currentQuestionIndex].coef_question -=20;
       }
+      //Pas de risque de sortie du [0,100] ici
     this.nextQuestion();
   }
 

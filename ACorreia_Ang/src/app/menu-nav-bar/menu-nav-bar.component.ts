@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LearningPackage} from "../created-interfaces";
 import {LessonPackageService} from "../lessonpackageservice";
 
@@ -8,7 +8,7 @@ import {LessonPackageService} from "../lessonpackageservice";
   templateUrl: './menu-nav-bar.component.html',
   styleUrls: ['./menu-nav-bar.component.css']
 })
-export class MenuNavBarComponent {
+export class MenuNavBarComponent implements OnInit {
   learningPackages : LearningPackage[] = [];
 
   constructor(private LPservice: LessonPackageService) {}

@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LearningPackage} from "../created-interfaces";
 import {LessonPackageService} from "../lessonpackageservice";
 import {ActivatedRoute, Router} from "@angular/router";
+import {LocalStorageService} from "../local-storageservice";
 
 @Component({
   selector: 'app-lesson-training-list-page',
   templateUrl: './lesson-training-list-page.component.html',
   styleUrls: ['./lesson-training-list-page.component.css']
 })
-export class LessonTrainingListPageComponent {
+export class LessonTrainingListPageComponent implements OnInit {
   learningPackages : LearningPackage[] = [];
-  selectedQuestionCount: number = 5;
-  constructor(private LPservice: LessonPackageService) {}
+  selectedQuestionCount: number = 10;
+  constructor(private LPservice: LessonPackageService, private StorageService: LocalStorageService, private router: Router) {}
 
   ngOnInit() {
     console.log('on init atteint');
@@ -35,6 +36,28 @@ export class LessonTrainingListPageComponent {
     const green = Math.round(255 * normalizedCoef);
     const blue = Math.round(255 * (1 - Math.abs(normalizedCoef - 0.5) * 2));
     return `rgb(${red}, ${green}, ${blue})`;
+  }
+
+  goToTrainingPage(id: number, count: number): void {
+    this.StorageService.saveLastSelectedId(id.toString());
+    this.router.navigate(['/lesson-training-page', id, count]);
+  }
+
+  isLastTriedPackage(id: string): boolean {
+    const lastTriedId = this.StorageService.getLastSelectedId();
+    return lastTriedId === id;
+  }
+
+  isFavorite(id: string): boolean {
+    return this.StorageService.IsInFavorites(id);
+  }
+
+  toggleFavorite(id: string): void {
+    if (this.StorageService.IsInFavorites(id)) {
+      this.StorageService.RemoveFromFavorites(id);
+    } else {
+      this.StorageService.AddToFavorites(id);
+    }
   }
 
 }
