@@ -61,25 +61,27 @@
         </li>
       </ul>
 
-      <div class="row mt-4">
-        <div class="col-md-12">
-          <h3>Ajouter une question dans le Learning Package</h3>
-          <form #packageForm="ngForm" (ngSubmit)="createQuestion()">
-            <div class="mb-3">
-              <label for="intitule_question" class="form-label">Intitulé de la question</label>
-              <input type="text" class="form-control" [(ngModel)]="intitule_nouvelle_question" name="intitule_question" required>
-            </div>
-            <div class="mb-3">
-              <label for="reponse_question" class="form-label">Réponse de la question</label>
-              <input type="text" class="form-control" [(ngModel)]="reponse_nouvelle_question" name="reponse_question" required>
-            </div>
-            <button type="submit" class="btn btn-success" [disabled]="!packageForm.valid">Créer Question</button>
-          </form>
-        </div>
-      </div>
+
 
     </div>
 
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h3>Ajouter une question dans le Learning Package</h3>
+        <form #packageForm="ngForm" (ngSubmit)="createQuestion()">
+          <div class="mb-3">
+            <label for="intitule_question" class="form-label">Intitulé de la question</label>
+            <input type="text" class="form-control" [(ngModel)]="intitule_nouvelle_question" name="intitule_question" required>
+          </div>
+          <div class="mb-3">
+            <label for="reponse_question" class="form-label">Réponse de la question</label>
+            <input type="text" class="form-control" [(ngModel)]="reponse_nouvelle_question" name="reponse_question" required>
+          </div>
+          <button type="submit" class="btn btn-success" [disabled]="!packageForm.valid">Créer Question</button>
+        </form>
+      </div>
+    </div>
+    
     <div *ngIf="!Questions || Questions.length === 0" class="alert alert-info">
       Pas de questions dans ce package. Essayez d'en ajouter.
     </div>
