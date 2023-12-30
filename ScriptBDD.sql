@@ -110,16 +110,16 @@ INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP
 ('Quelle est la capitale de l Inde ?', 'New Delhi', 0, 1),
 ('Quelle est la capitale de l Australie ?', 'Canberra', 0, 1),
 ('Quelle est la capitale de la Russie ?', 'Moscou', 0, 1),
-('Quelle est la capitale du Brésil ?', 'Brasília', 0, 1),
-('Quelle est la capitale de la Chine ?', 'Pékin', 0, 1),
+('Quelle est la capitale du Bresil ?', 'Brasilia', 0, 1),
+('Quelle est la capitale de la Chine ?', 'Pekin', 0, 1),
 ('Quelle est la capitale de l Argentine ?', 'Buenos Aires', 0, 1),
 ('Quelle est la capitale du Portugal ?', 'Lisbonne', 0, 1),
-('Quelle est la capitale de l Égypte ?', 'Le Caire', 0, 1),
+('Quelle est la capitale de l Egypte ?', 'Le Caire', 0, 1),
 ('Quelle est la capitale de la Turquie ?', 'Ankara', 0, 1),
-('Quelle est la capitale de la Grèce ?', 'Athènes', 0, 1),
+('Quelle est la capitale de la Grece ?', 'Athènes', 0, 1),
 ('Quelle est la capitale du Mexique ?', 'Mexico', 0, 1),
 ('Quelle est la capitale du Nigeria ?', 'Abuja', 0, 1),
-('Quelle est la capitale de l Iran ?', 'Téhéran', 0, 1),
+('Quelle est la capitale de l Iran ?', 'Teheran', 0, 1),
 ('Quelle est la capitale du Pakistan ?', 'Islamabad', 0, 1);
 
 INSERT INTO Questions (Intitule_Question, Reponse_Question, Coef_Question, Id_LP) VALUES
